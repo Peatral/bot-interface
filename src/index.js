@@ -13,25 +13,34 @@ import NotFound from "./pages/NotFound";
 
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/UserContext";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
-      <HashRouter basename={process.env.REACT_APP_BASENAME}>
+      <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
         <Header />
         <main>
           <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/logincallback" element={<LoginCallback />} />
-            <Route exact path="/dashboard" element={<ProtectedRoute />}>
-              <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
+            <Route
+              path={`${process.env.PUBLIC_URL}/logincallback`}
+              element={<LoginCallback />}
+            />
+            <Route
+              path={`${process.env.PUBLIC_URL}/dashboard`}
+              element={<ProtectedRoute />}
+            >
+              <Route
+                path={`${process.env.PUBLIC_URL}/dashboard`}
+                element={<Dashboard />}
+              />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
-      </HashRouter>
+      </BrowserRouter>
     </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")

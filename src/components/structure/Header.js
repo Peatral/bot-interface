@@ -85,7 +85,7 @@ const Header = () => {
     <header className="header">
       <Navbar>
         <NavbarItem>
-          <Button link="/">Home</Button>
+          <Button link={`${process.env.PUBLIC_URL}/`}>Home</Button>
         </NavbarItem>
         <NavbarItem style={{ marginLeft: "auto" }}>
           {userContext.details === null || !userContext.details ? (
