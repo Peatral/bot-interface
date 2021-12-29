@@ -13,12 +13,12 @@ import NotFound from "./pages/NotFound";
 
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/UserContext";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
-      <BrowserRouter>
+      <HashRouter basename={process.env.REACT_APP_BASENAME}>
         <Header />
         <main>
           <Routes>
@@ -31,7 +31,7 @@ ReactDOM.render(
           </Routes>
         </main>
         <Footer />
-      </BrowserRouter>
+      </HashRouter>
     </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
