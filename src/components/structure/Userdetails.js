@@ -39,15 +39,11 @@ const Userdetails = () => {
         <ul>
           <li>
             <i className="fas fa-columns icon"></i>
-            <Link to={`${process.env.REACT_APP_BASENAME}/dashboard`}>
-              Dashboard
-            </Link>
+            <Link to={`/dashboard`}>Dashboard</Link>
           </li>
           <li>
             <i className="fas fa-pen icon"></i>
-            <Link to={`${process.env.REACT_APP_BASENAME}/proposals`}>
-              Proposals
-            </Link>
+            <Link to={`/proposals`}>Proposals</Link>
           </li>
           <li>
             <i className="fas fa-sign-out-alt icon"></i>

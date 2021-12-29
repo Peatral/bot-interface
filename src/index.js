@@ -18,23 +18,14 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
-      <HashRouter basename={process.env.REACT_APP_BASENAME}>
+      <HashRouter>
         <Header />
         <main>
           <Routes>
-            <Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
-            <Route
-              path={`${process.env.PUBLIC_URL}/logincallback`}
-              element={<LoginCallback />}
-            />
-            <Route
-              path={`${process.env.PUBLIC_URL}/dashboard`}
-              element={<ProtectedRoute />}
-            >
-              <Route
-                path={`${process.env.PUBLIC_URL}/dashboard`}
-                element={<Dashboard />}
-              />
+            <Route path={`/`} element={<Home />} />
+            <Route path={`/logincallback`} element={<LoginCallback />} />
+            <Route path={`/dashboard`} element={<ProtectedRoute />}>
+              <Route path={`/dashboard`} element={<Dashboard />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
