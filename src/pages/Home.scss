@@ -1,0 +1,38 @@
+.eye-holder {
+  padding: 1rem;
+  height: 10vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+}
+
+@keyframes blink {
+  70% {
+    position: relative;
+    width: 10vh;
+    height: 10vh;
+    top: 0;
+  }
+  85% {
+    width: 10vh;
+    height: 1vh;
+    position: relative;
+    top: -4.5vh;
+  }
+}
+
+.bot-eye {
+  border-radius: 50%;
+  pointer-events: none;
+
+  width: 10vh;
+  height: 10vh;
+  top: 0px;
+  position: relative;
+  object-fit: cover;
+  transition: all 1.2s linear 0s;
+  animation: 6s ease 0s infinite normal none running blink;
+}

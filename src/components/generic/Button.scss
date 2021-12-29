@@ -1,0 +1,25 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1rem;
+  height: calc(100% - 2 * 1rem);
+
+  border: none;
+  background-color: black;
+  color: whitesmoke;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1rem;
+
+  cursor: pointer;
+
+  transition-duration: 0.2s;
+
+  &:hover {
+    background-color: lightgray;
+    color: black;
+  }
+}
