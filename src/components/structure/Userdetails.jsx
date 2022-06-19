@@ -1,6 +1,13 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faColumns,
+  faPen,
+  faSignOutAlt,
+  faServer,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "./Userdetails.scss";
 
@@ -17,7 +24,7 @@ const Userdetails = () => {
       },
     }).then(async (response) => {
       setUserContext((oldValues) => {
-        return { ...oldValues, details: undefined, token: null };
+        return { ...oldValues, details: null, token: null, guilds: null };
       });
       window.localStorage.setItem("logout", Date.now());
     });
@@ -38,15 +45,19 @@ const Userdetails = () => {
         </h3>
         <ul>
           <li>
-            <i className="fas fa-columns icon"></i>
+            <FontAwesomeIcon icon={faColumns} className="icon" />
             <Link to={`/dashboard`}>Dashboard</Link>
           </li>
           <li>
-            <i className="fas fa-pen icon"></i>
+            <FontAwesomeIcon icon={faServer} className="icon" />
+            <Link to={`/guilds`}>Guilds</Link>
+          </li>
+          <li>
+            <FontAwesomeIcon icon={faPen} className="icon" />
             <Link to={`/proposals`}>Proposals</Link>
           </li>
           <li>
-            <i className="fas fa-sign-out-alt icon"></i>
+            <FontAwesomeIcon icon={faSignOutAlt} className="icon" />
             <a onClick={logoutHandler}>Logout</a>
           </li>
         </ul>

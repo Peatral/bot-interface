@@ -18,6 +18,8 @@
 
   transition-duration: 0.2s;
 
+  white-space: nowrap;
+
   &:hover {
     background-color: lightgray;
     color: black;

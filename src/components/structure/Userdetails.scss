@@ -1,7 +1,7 @@
 .action {
-  z-index: 1;
-  height: 2.5rem;
-  width: 2.5rem;
+  z-index: 10;
+  height: 3rem;
+  width: 3rem;
 
   .profile {
     position: relative;
@@ -38,7 +38,7 @@
       opacity: 1;
     }
 
-    ::before {
+    &::before {
       content: "";
       position: absolute;
       top: -0.3rem;
@@ -73,7 +73,7 @@
 
         .icon {
           margin-right: 0.5rem;
-          opacity: 0.5;
+          color: #555;
           transition: 0.5s;
         }
 
@@ -90,7 +90,6 @@
         &:hover {
           .icon,
           a {
-            opacity: 1;
             color: rgb(202, 120, 223);
           }
         }

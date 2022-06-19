@@ -1,0 +1,30 @@
+.guilds {
+  width: 80%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  .toptext {
+    margin: 0.5rem;
+    text-align: center;
+  }
+
+  .guildholder {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    row-gap: 0.5rem;
+    column-gap: 0.5rem;
+
+    .guildentry {
+      a {
+        text-decoration: none;
+        color: whitesmoke;
+      }
+    }
+  }
+}

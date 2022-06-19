@@ -3,7 +3,10 @@ import "./Navbar.scss";
 
 const Navbar = (props) => {
   return (
-    <nav className="navbar" style={props.style}>
+    <nav
+      className={`navbar${props.className ? ` ${props.className}` : ""}`}
+      style={props.style}
+    >
       {props.children}
     </nav>
   );

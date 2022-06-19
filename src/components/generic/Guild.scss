@@ -1,0 +1,39 @@
+.guild {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  padding: 0.5rem;
+
+  border-radius: 0.5rem;
+
+  background-color: black;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #292929;
+  }
+
+  .icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+    padding: 0.2rem;
+    pointer-events: none;
+  }
+
+  .name {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .crown {
+    color: goldenrod;
+  }
+
+  .noimage {
+    color: whitesmoke;
+  }
+}

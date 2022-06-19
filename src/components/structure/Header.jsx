@@ -6,6 +6,7 @@ import "./Header.scss";
 import Button from "../generic/Button";
 import Navbar from "../generic/Navbar";
 import NavbarItem from "../generic/NavbarItem";
+import Loader from "../generic/Loader";
 
 import Userdetails from "./Userdetails";
 
@@ -19,13 +20,17 @@ const Header = () => {
           <Button link={`/`}>Home</Button>
         </NavbarItem>
         <NavbarItem style={{ marginLeft: "auto" }}>
-          {userContext.details === null || !userContext.details ? (
+          {userContext.details === null ? (
             <Button
               link={`${process.env.REACT_APP_BACKEND_URL}users/auth/discord`}
               external={true}
             >
               Login
             </Button>
+          ) : !userContext.details ? (
+            <div className="loader-wrapper">
+              <Loader />
+            </div>
           ) : (
             <Userdetails />
           )}
