@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="footer">
       <Tooltip tooltiptext="Homepage">
         <a className="footer-link" href="https://peatral.xyz">
-          ©2020-2021 Christof Reimers
+          ©2020-2022 Christof Reimers
         </a>
       </Tooltip>
     </footer>

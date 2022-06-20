@@ -15,7 +15,7 @@ const UserProvider = (props) => {
    * Silent Refresh
    */
   const silentRefresh = useCallback(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}users/refreshToken`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/refreshToken`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -63,7 +63,7 @@ const UserProvider = (props) => {
    * Fetch user details if possible
    */
   const fetchUserDetails = useCallback(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}users/me`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/me`, {
       method: "GET",
       credentials: "include",
       // Pass authentication token as bearer token in header
@@ -79,6 +79,11 @@ const UserProvider = (props) => {
           return { ...oldValues, details: data };
         });
       }
+    }).catch(err => {
+      // TODO: catch no user details loading
+      setState((oldValues) => {
+        return { ...oldValues, details: null };
+      });
     });
   }, [setState, state.token]);
 
@@ -93,7 +98,7 @@ const UserProvider = (props) => {
    * Fetch guilds once token is ready
    */
   const fetchGuilds = useCallback(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}users/me/guilds`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/me/guilds`, {
       method: "GET",
       credentials: "include",
       // Pass authentication token as bearer token in header
@@ -109,16 +114,22 @@ const UserProvider = (props) => {
           return { ...oldValues, guilds: data };
         });
       }
+    }).catch(err => {
+      //TODO: catch no guilds loading
+      setState((oldValues) => {
+        return { ...oldValues, guilds: null };
+      });
     });
   }, [setState, state.token]);
 
+  
   useEffect(() => {
     // fetch only when guilds are not present
     if (!state.guilds && state.token) {
       fetchGuilds();
     }
   }, [state.guilds, fetchGuilds, state.token]);
-
+  
   return (
     <UserContext.Provider value={[state, setState]}>
       {props.children}

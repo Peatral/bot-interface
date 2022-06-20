@@ -22,7 +22,7 @@ const Header = () => {
         <NavbarItem style={{ marginLeft: "auto" }}>
           {userContext.details === null ? (
             <Button
-              link={`${process.env.REACT_APP_BACKEND_URL}users/auth/discord`}
+              link={`${process.env.REACT_APP_BACKEND_URL}/users/auth/discord`}
               external={true}
             >
               Login

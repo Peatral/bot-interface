@@ -16,7 +16,7 @@ const Userdetails = () => {
   const [menu, setMenu] = useState(false);
 
   const logoutHandler = () => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}users/logout`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/users/logout`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
