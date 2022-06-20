@@ -35,6 +35,10 @@ const UserProvider = (props) => {
       }
       // call refreshToken every 5 minutes to renew the authentication token.
       setTimeout(silentRefresh, 5 * 60 * 1000);
+    }).catch(err => {
+      setState((oldValues) => {
+        return { ...oldValues, token: null, details: null, guilds: null };
+      });
     });
   }, [setState]);
 
@@ -72,13 +76,28 @@ const UserProvider = (props) => {
         Authorization: `Bearer ${state.token}`,
       },
     }).then(async (response) => {
+      let data = null
+      
       if (response.ok) {
-        const data = await response.json();
-
+        data = await response.json();
+      } else {
         setState((oldValues) => {
-          return { ...oldValues, details: data };
+          return { ...oldValues, details: null };
         });
+        return;
       }
+
+      // for some reason it may be that the data is NOT the user details
+      if (!data.id) {
+        setState((oldValues) => {
+          return { ...oldValues, details: null };
+        });
+        return;
+      }
+
+      setState((oldValues) => {
+        return { ...oldValues, details: data };
+      });
     }).catch(err => {
       // TODO: catch no user details loading
       setState((oldValues) => {
@@ -112,6 +131,10 @@ const UserProvider = (props) => {
 
         setState((oldValues) => {
           return { ...oldValues, guilds: data };
+        });
+      } else {
+        setState((oldValues) => {
+          return { ...oldValues, guilds: null };
         });
       }
     }).catch(err => {

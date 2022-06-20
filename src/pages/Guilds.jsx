@@ -11,13 +11,13 @@ const Guilds = () => {
 
   return (
     <div className="main">
-      {userContext.guilds ? (
+      {userContext.guilds && Array.isArray(userContext.guilds) ? (
         <div className="guilds">
           <p className="toptext">You are in the following guilds:</p>
           <ul className="guildholder">
             {userContext.guilds.map((guild, index) => {
               return (
-                <li className="guildentry">
+                <li className="guildentry" key={guild.id}>
                   <Link to={`/guilds/${guild.id}`}>
                     <Guild guild={guild} />
                   </Link>
