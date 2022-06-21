@@ -130,6 +130,20 @@ const PollEditor = () => {
         <Stack>
           <Title order={1}>Poll Editor</Title>
           <TextInput placeholder="Pineapple on pizza? 🍕" label="Question" required {...form.getInputProps('title')}/>
+          <NumberInput defaultValue={30000} placeholder="The duration" label="How long should the poll be?" required />
+          {
+            roles.length > 0 &&
+            <Select label="The this poll is targeted at" placeholder="Pick one" {...form.getInputProps('roleId')}
+              data={ 
+                [{ value: "none", label : "None" }].concat(roles.map(role => {
+                  return {
+                    value: role.id,
+                    label: role.name
+                  }
+                }))
+              }
+            />
+          }
           <Switch label="Fixed select amount?" checked={fixedSelectAmount} onChange={(event) => {
             const checked = event.currentTarget.checked;
             if (!checked) {
@@ -144,7 +158,7 @@ const PollEditor = () => {
           }}/>
           {
             fixedSelectAmount ? 
-            <Slider min={1} max={5} value={maxChoices}
+            <Slider p="md" min={1} max={5} value={maxChoices}
               marks={[
                 { value: 1, label: '1' },
                 { value: 2, label: '2' },
@@ -158,7 +172,7 @@ const PollEditor = () => {
                 setMinChoices(value);
                 setMaxChoices(value);
               }}
-            /> : <RangeSlider min={1} max={5} minRange={1} value={[minChoices, maxChoices]}
+            /> : <RangeSlider p="md" min={1} max={5} minRange={1} value={[minChoices, maxChoices]}
               marks={[
                 { value: 1, label: '1' },
                 { value: 2, label: '2' },
@@ -172,20 +186,6 @@ const PollEditor = () => {
                 setMinChoices(min);
                 setMaxChoices(max);
               }}
-            />
-          }
-          <NumberInput defaultValue={30000} placeholder="The duration" label="How long should the poll be?" required />
-          {
-            roles.length > 0 &&
-            <Select label="The this poll is targeted at" placeholder="Pick one" {...form.getInputProps('roleId')}
-              data={ 
-                [{ value: "none", label : "None" }].concat(roles.map(role => {
-                  return {
-                    value: role.id,
-                    label: role.name
-                  }
-                }))
-              }
             />
           }
           <Button onClick={() =>
