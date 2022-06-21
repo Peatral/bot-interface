@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
-import { Paper, Switch, TextInput, Slider, RangeSlider, NumberInput, Select, Title, Group, Button, Stack, Divider } from '@mantine/core';
+import { Paper, Switch, TextInput, Slider, RangeSlider, NumberInput, Select, Title, Group, Button, Stack, Divider, LoadingOverlay } from '@mantine/core';
 
 import { useForm, formList } from '@mantine/form';
 
@@ -21,6 +21,8 @@ const PollEditor = () => {
   const [minChoices, setMinChoices] = useState(1);
   const [maxChoices, setMaxChoices] = useState(1);
   
+  const [loading, setLoading] = useState(true);
+
   const form = useForm({
     initialValues: {
       minChoices: 1,
@@ -83,8 +85,10 @@ const PollEditor = () => {
         }
         form.values.roleId = json.roleId;
         form.values.duration = json.duration;
+
+        setLoading(false);
       });
-  }, [guildId, pollId, setMinChoices, setMaxChoices, setFixedSelectAmount]);
+  }, [guildId, pollId, setMinChoices, setMaxChoices, setFixedSelectAmount, form.values, setLoading]);
 
   const fields = form.values.entries.map((entry, index) => (
     <Stack key={index}>
@@ -114,7 +118,8 @@ const PollEditor = () => {
 
   return (
     <div className={"polleditor-container"}>
-      <Paper p="md" className={"polleditor"}>
+      <Paper className={"polleditor"} style={{ position: 'relative' }}>
+        <LoadingOverlay visible={loading} />
         <form onSubmit={form.onSubmit((values) => {
           fetch(`${process.env.REACT_APP_BACKEND_URL}/polls/${guildId}/${pollId}`, {
             method: 'PATCH',
