@@ -11,6 +11,7 @@ import LoginCallback from "./pages/LoginCallback";
 import Dashboard from "./pages/Dashboard";
 import Guilds from "./pages/Guilds";
 import GuildView from "./pages/GuildView";
+import PollEditor from "./pages/PollEditor";
 import NotFound from "./pages/NotFound";
 
 import { UserProvider } from "./context/UserContext";
@@ -35,6 +36,9 @@ ReactDOM.render(
             </Route>
             <Route path="/guilds/:guildId" element={<ProtectedRoute />}>
               <Route path="/guilds/:guildId" element={<GuildView />} />
+            </Route>
+            <Route path="/guilds/:guildId/polls/:pollId" element={<ProtectedRoute />}>
+              <Route path="/guilds/:guildId/polls/:pollId" element={<PollEditor />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

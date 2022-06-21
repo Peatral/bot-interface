@@ -22,7 +22,7 @@ const GuildView = () => {
       </Navbar>
       <div className="main">
         <div className="display-middle">
-          {userContext.guilds ? (
+          {userContext.guilds && Array.isArray(userContext.guilds) ? (
             <Guild
               guild={userContext.guilds.find((guild) => guild.id === guildId)}
             />

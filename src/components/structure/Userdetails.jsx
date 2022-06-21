@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useClickOutside } from '@mantine/hooks';
 import {
   faColumns,
   faPen,
@@ -14,6 +15,7 @@ import "./Userdetails.scss";
 const Userdetails = () => {
   const [userContext, setUserContext] = useContext(UserContext);
   const [menu, setMenu] = useState(false);
+  const ref = useClickOutside(() => setMenu(false));
 
   const logoutHandler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/users/logout`, {
@@ -39,7 +41,7 @@ const Userdetails = () => {
           alt="Avatar"
         />
       </div>
-      <div className={`menu${menu ? " active" : ""}`}>
+      <div className={`menu${menu ? " active" : ""}`} ref={ref}>
         <h3>
           {userContext.details.username}#{userContext.details.discriminator}
         </h3>
