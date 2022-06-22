@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
-import { Link } from "react-router-dom";
-import { useClickOutside } from '@mantine/hooks';
+import { useNavigate } from "react-router-dom";
+import { useDisclosure } from '@mantine/hooks';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faColumns,
@@ -10,12 +10,16 @@ import {
   faServer,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { Menu, Divider } from '@mantine/core';
+
 import "./Userdetails.scss";
 
 const Userdetails = () => {
   const [userContext, setUserContext] = useContext(UserContext);
-  const [menu, setMenu] = useState(false);
-  const ref = useClickOutside(() => setMenu(false));
+
+  const navigate = useNavigate();
+
+  const [opened, handlers] = useDisclosure(false);
 
   const logoutHandler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/users/logout`, {
@@ -34,35 +38,20 @@ const Userdetails = () => {
 
   return (
     <div className="action">
-      <div className="profile" onClick={() => setMenu(!menu)}>
-        <img
+      <div className="profile" onClick={() => handlers.toggle()}>
+        
+        <Menu withArrow placement="end" position="bottom" gutter={10} control={<img
           className="avatar"
           src={`https://cdn.discordapp.com/avatars/${userContext.details.id}/${userContext.details.avatar}`}
           alt="Avatar"
-        />
-      </div>
-      <div className={`menu${menu ? " active" : ""}`} ref={ref}>
-        <h3>
-          {userContext.details.username}#{userContext.details.discriminator}
-        </h3>
-        <ul>
-          <li>
-            <FontAwesomeIcon icon={faColumns} className="icon" />
-            <Link to={`/dashboard`}>Dashboard</Link>
-          </li>
-          <li>
-            <FontAwesomeIcon icon={faServer} className="icon" />
-            <Link to={`/guilds`}>Guilds</Link>
-          </li>
-          <li>
-            <FontAwesomeIcon icon={faPen} className="icon" />
-            <Link to={`/polls`}>Polls</Link>
-          </li>
-          <li>
-            <FontAwesomeIcon icon={faSignOutAlt} className="icon" />
-            <a onClick={logoutHandler} href="/">Logout</a>
-          </li>
-        </ul>
+        />} opened={opened} onOpen={handlers.open} onClose={handlers.close}>
+          <Menu.Label>General</Menu.Label>
+          <Menu.Item onClick={() => navigate(`/dashboard`)} icon={<FontAwesomeIcon icon={faColumns}/>}>Dashboard</Menu.Item>
+          <Menu.Item onClick={() => navigate(`/guilds`)} icon={<FontAwesomeIcon icon={faServer}/>}>Guilds</Menu.Item>
+          <Menu.Item onClick={() => navigate(`/polls`)} icon={<FontAwesomeIcon icon={faPen}/>}>Polls</Menu.Item>
+          <Divider />
+          <Menu.Item onClick={logoutHandler} icon={<FontAwesomeIcon icon={faSignOutAlt}/>} color="red">Logout</Menu.Item>
+        </Menu>
       </div>
     </div>
   );
