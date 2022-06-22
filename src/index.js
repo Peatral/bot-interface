@@ -26,9 +26,9 @@ import reportWebVitals from "./reportWebVitals";
 ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
-      <UserProvider>
-        <MantineProvider theme={{ colorScheme: 'dark' }}>
-          <NotificationsProvider>
+      <MantineProvider theme={{ colorScheme: 'dark' }}>
+        <NotificationsProvider>
+          <UserProvider>
             <AppShell
               header={<Header />}
               footer={<Footer />}
@@ -57,9 +57,9 @@ ReactDOM.render(
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AppShell>
-          </NotificationsProvider>
-        </MantineProvider>
-      </UserProvider>
+          </UserProvider>
+        </NotificationsProvider>
+      </MantineProvider>
     </HashRouter>
   </React.StrictMode>,
   document.getElementById("root")

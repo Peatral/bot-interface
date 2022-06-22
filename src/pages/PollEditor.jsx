@@ -156,7 +156,7 @@ const PollEditor = () => {
   }, [form.values, minChoices, maxChoices, fixedSelectAmount, loading]);
 
   useEffect(() => {
-    if (loading) {
+    if (loading || saving) {
       return;
     }
 
@@ -208,6 +208,8 @@ const PollEditor = () => {
       <Paper className={"polleditor"} style={{ position: 'relative' }}>
         <LoadingOverlay visible={loading} />
         <form onSubmit={form.onSubmit((values) => {
+          setSaving(true);
+
           showNotification({
             id: 'update-poll',
             loading: true,
@@ -216,7 +218,7 @@ const PollEditor = () => {
             autoClose: false,
             disallowClose: true,
           });
-          setSaving(true);
+          
           
           patchPoll(userContext.token, pollId, values)
             .then((json) => {

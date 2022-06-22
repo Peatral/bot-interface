@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
+import { showNotification } from '@mantine/notifications';
+
 const UserContext = React.createContext([{}, () => {}]);
 
 let initialState = {
@@ -10,6 +12,30 @@ let initialState = {
 
 const UserProvider = (props) => {
   const [state, setState] = useState(initialState);
+
+  const fetchDetailsFail = () => {
+    showNotification({
+      color: "red",
+      title: "Could not load user details...",
+      message: "This happens sometimes, try refreshing the page",
+    });
+    // TODO: catch no user details loading
+    setState((oldValues) => {
+      return { ...oldValues, details: null };
+    });
+  }
+
+  const fetchGuildsFail = () => {
+    showNotification({
+      color: "red",
+      title: "Could not load guilds...",
+      message: "This happens sometimes, try refreshing the page",
+    });
+    // TODO: catch no user details loading
+    setState((oldValues) => {
+      return { ...oldValues, guilds: null };
+    });
+  }
 
   /**
    * Silent Refresh
@@ -81,28 +107,19 @@ const UserProvider = (props) => {
       if (response.ok) {
         data = await response.json();
       } else {
-        setState((oldValues) => {
-          return { ...oldValues, details: null };
-        });
-        return;
+        return fetchDetailsFail();
       }
 
       // for some reason it may be that the data is NOT the user details
       if (!data.id) {
-        setState((oldValues) => {
-          return { ...oldValues, details: null };
-        });
-        return;
+        return fetchDetailsFail();
       }
 
       setState((oldValues) => {
         return { ...oldValues, details: data };
       });
     }).catch(err => {
-      // TODO: catch no user details loading
-      setState((oldValues) => {
-        return { ...oldValues, details: null };
-      });
+      fetchDetailsFail();
     });
   }, [setState, state.token]);
 
@@ -133,15 +150,10 @@ const UserProvider = (props) => {
           return { ...oldValues, guilds: data };
         });
       } else {
-        setState((oldValues) => {
-          return { ...oldValues, guilds: null };
-        });
+        fetchGuildsFail();
       }
     }).catch(err => {
-      //TODO: catch no guilds loading
-      setState((oldValues) => {
-        return { ...oldValues, guilds: null };
-      });
+      fetchGuildsFail();
     });
   }, [setState, state.token]);
 
