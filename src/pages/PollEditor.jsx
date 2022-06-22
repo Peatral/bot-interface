@@ -171,7 +171,7 @@ const PollEditor = () => {
     ));
     // now we can see if there is a diff or not
     setPollModified(difflist.length > 0);  
-  }, [form.values, poll]);
+  }, [form.values, poll, minChoices, maxChoices]);
 
 
   const fields = form.values.entries.map((entry, index) => (
