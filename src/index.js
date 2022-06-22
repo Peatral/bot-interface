@@ -17,7 +17,7 @@ import NotFound from "./pages/NotFound";
 
 import { UserProvider } from "./context/UserContext";
 
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, AppShell, Container } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 
 import { HashRouter, Routes, Route } from "react-router-dom";
@@ -29,8 +29,13 @@ ReactDOM.render(
       <UserProvider>
         <MantineProvider theme={{ colorScheme: 'dark' }}>
           <NotificationsProvider>
-            <Header />
-            <main>
+            <AppShell
+              header={<Header />}
+              footer={<Footer />}
+              styles={(theme) => ({
+                main: { minHeight: "calc(100vh - 6.5rem)" }
+              })}
+            >
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/logincallback" element={<LoginCallback />} />
@@ -51,8 +56,7 @@ ReactDOM.render(
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </main>
-            <Footer />
+            </AppShell>
           </NotificationsProvider>
         </MantineProvider>
       </UserProvider>

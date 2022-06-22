@@ -1,8 +1,24 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
-import { Paper, Switch, TextInput, Slider, RangeSlider, NumberInput, Select, Title, Group, Button, Stack, Divider, LoadingOverlay } from '@mantine/core';
+import { 
+  Paper, 
+  Switch, 
+  TextInput, 
+  Slider, 
+  RangeSlider, 
+  NumberInput, 
+  Select, 
+  Title, 
+  Group, 
+  Button, 
+  Stack, 
+  Divider, 
+  LoadingOverlay, 
+  Container, 
+  Affix 
+} from '@mantine/core';
 import { showNotification, updateNotification } from '@mantine/notifications';
 import { useForm, formList } from '@mantine/form';
 
@@ -10,13 +26,17 @@ import { patchPoll, getPoll, getRoles } from "../apilib";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArrowLeft,
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { getDiff } from "recursive-diff";
 
 import "./PollEditor.scss";
 
 const PollEditor = () => {
   const { pollId } = useParams();
+  const navigate = useNavigate();
   const [userContext] = useContext(UserContext);
 
   const [poll, setPoll] = useState({
@@ -46,6 +66,8 @@ const PollEditor = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const [pollModified, setPollModified] = useState(false);
+
   const form = useForm({
     initialValues: {
       minChoices: 1,
@@ -72,7 +94,7 @@ const PollEditor = () => {
   });
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && !saving) {
       return;
     }
     getPoll(userContext.token, pollId)
@@ -95,7 +117,7 @@ const PollEditor = () => {
 
         setLoading(false);
       });
-  }, [pollId, setMinChoices, setMaxChoices, setFixedSelectAmount, form.values, setLoading, userContext.token, loading]);
+  }, [pollId, setMinChoices, setMaxChoices, setFixedSelectAmount, form.values, setLoading, userContext.token, loading, saving]);
 
   useEffect(() => {
     if (poll.guildId) {
@@ -118,7 +140,7 @@ const PollEditor = () => {
       form.values.maxChoices = maxChoices;
   }, [maxChoices, form.values]);
   useEffect(() => {
-    if (loading) {
+    if (loading ) {
       return;
     }
     if (maxChoices > form.values.entries.length) {
@@ -132,6 +154,25 @@ const PollEditor = () => {
     }
     form.values.maxChoices = maxChoices;
   }, [form.values, minChoices, maxChoices, fixedSelectAmount, loading]);
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    // make the form a simple object
+    const newPoll = JSON.parse(JSON.stringify(form.values));
+    // diff them
+    let difflist = getDiff(poll, newPoll);
+    // strip the unwanted diffs out
+    difflist = difflist.filter(diff => !(diff.op === "delete" 
+        && diff.path.length === 1 
+        && ["status", "votes", "id", "__v"].map(s => diff.path[0].toLocaleLowerCase().includes(s)).includes(true)
+    ));
+    // now we can see if there is a diff or not
+    setPollModified(difflist.length > 0);  
+  }, [form.values, poll]);
+
 
   const fields = form.values.entries.map((entry, index) => (
     <Stack key={index}>
@@ -160,7 +201,10 @@ const PollEditor = () => {
   ));
 
   return (
-    <div className={"polleditor-container"}>
+    <Container className={"polleditor-container"}>
+      <Affix position={{ top: 60, left: 20 }}>
+        <Button onClick={() => navigate(`/polls`)} leftIcon={<FontAwesomeIcon icon={faArrowLeft}/>}>Go back to Poll Overview</Button>
+      </Affix>
       <Paper className={"polleditor"} style={{ position: 'relative' }}>
         <LoadingOverlay visible={loading} />
         <form onSubmit={form.onSubmit((values) => {
@@ -173,9 +217,10 @@ const PollEditor = () => {
             disallowClose: true,
           });
           setSaving(true);
-
+          
           patchPoll(userContext.token, pollId, values)
             .then((json) => {
+              setPoll(json);
               updateNotification({
                 id: 'update-poll',
                 color: 'teal',
@@ -246,12 +291,12 @@ const PollEditor = () => {
             </>
           }
           <Group position="right" mt="md">
-            <Button type="submit" color="green" loading={saving}>Update Poll</Button>
+            <Button disabled={!pollModified} type="submit" color="green" loading={saving}>Update Poll</Button>
           </Group>
         </Stack>
         </form>
       </Paper>
-    </div>
+    </Container>
   );
 };
 
