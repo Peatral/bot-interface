@@ -12,9 +12,13 @@ import Dashboard from "./pages/Dashboard";
 import Guilds from "./pages/Guilds";
 import GuildView from "./pages/GuildView";
 import PollEditor from "./pages/PollEditor";
+import Polls from "./pages/Polls";
 import NotFound from "./pages/NotFound";
 
 import { UserProvider } from "./context/UserContext";
+
+import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 
 import { HashRouter, Routes, Route } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
@@ -23,27 +27,34 @@ ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
       <UserProvider>
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/logincallback" element={<LoginCallback />} />
-            <Route path="/dashboard" element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Route>
-            <Route path="/guilds" element={<ProtectedRoute />}>
-              <Route path="/guilds" element={<Guilds />} />
-            </Route>
-            <Route path="/guilds/:guildId" element={<ProtectedRoute />}>
-              <Route path="/guilds/:guildId" element={<GuildView />} />
-            </Route>
-            <Route path="/guilds/:guildId/polls/:pollId" element={<ProtectedRoute />}>
-              <Route path="/guilds/:guildId/polls/:pollId" element={<PollEditor />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
+        <MantineProvider theme={{ colorScheme: 'dark' }}>
+          <NotificationsProvider>
+            <Header />
+            <main>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/logincallback" element={<LoginCallback />} />
+                <Route path="/dashboard" element={<ProtectedRoute />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                </Route>
+                <Route path="/guilds" element={<ProtectedRoute />}>
+                  <Route path="/guilds" element={<Guilds />} />
+                </Route>
+                <Route path="/guilds/:guildId" element={<ProtectedRoute />}>
+                  <Route path="/guilds/:guildId" element={<GuildView />} />
+                </Route>
+                <Route path="/polls" element={<ProtectedRoute />}>
+                  <Route path="/polls" element={<Polls />} />
+                </Route>
+                <Route path="/polls/:pollId" element={<ProtectedRoute />}>
+                  <Route path="/polls/:pollId" element={<PollEditor />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+          </NotificationsProvider>
+        </MantineProvider>
       </UserProvider>
     </HashRouter>
   </React.StrictMode>,

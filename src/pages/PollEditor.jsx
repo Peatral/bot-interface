@@ -3,15 +3,37 @@ import { useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 import { Paper, Switch, TextInput, Slider, RangeSlider, NumberInput, Select, Title, Group, Button, Stack, Divider, LoadingOverlay } from '@mantine/core';
-
+import { showNotification, updateNotification } from '@mantine/notifications';
 import { useForm, formList } from '@mantine/form';
+
+import { patchPoll, getPoll, getRoles } from "../apilib";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "./PollEditor.scss";
 
 const PollEditor = () => {
-  const { guildId, pollId } = useParams();
+  const { pollId } = useParams();
+  const [userContext] = useContext(UserContext);
 
-  const [userContext, setUserContext] = useContext(UserContext);
+  const [poll, setPoll] = useState({
+    _id: "",
+    entries: [],
+    votes: [],
+    title: "",
+    status: "SCHEDULED",
+    duration: 1000 * 60 * 5,
+    minChoices: 1,
+    maxChoices: 1,
+    roleId: null,
+    messageId: null,
+    channelId: null,
+    guildId: null,
+    authorId: null,
+  });
 
   const [roles, setRoles] = useState([]);
 
@@ -22,6 +44,7 @@ const PollEditor = () => {
   const [maxChoices, setMaxChoices] = useState(1);
   
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -49,35 +72,19 @@ const PollEditor = () => {
   });
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/guilds/${guildId}/roles`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userContext.token}`,
-      },
-    })
-    .then(res => res.json())
-    .then(json => {
-      if (json.error) {
-        return;
-      }
-      setRoles(json.roles);
-    })
-  }, [userContext.token, guildId]);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/polls/${guildId}/${pollId}`)
-      .then(res => res.json())
+    if (!loading) {
+      return;
+    }
+    getPoll(userContext.token, pollId)
       .then(json => {
-        form.values.minChoices = json.minChoices;
-        form.values.maxChoices = json.maxChoices;
-        setMinChoices(form.values.minChoices);
-        setMaxChoices(form.values.maxChoices);
+        setPoll(json);
 
         if (json.minChoices !== json.maxChoices) {
           setFixedSelectAmount(false);
         }
+
+        setMinChoices(json.minChoices);
+        setMaxChoices(json.maxChoices);
 
         form.values.title = json.title;
         if (json.entries.length >= 2) {
@@ -88,7 +95,43 @@ const PollEditor = () => {
 
         setLoading(false);
       });
-  }, [guildId, pollId, setMinChoices, setMaxChoices, setFixedSelectAmount, form.values, setLoading]);
+  }, [pollId, setMinChoices, setMaxChoices, setFixedSelectAmount, form.values, setLoading, userContext.token, loading]);
+
+  useEffect(() => {
+    if (poll.guildId) {
+      getRoles(userContext.token, poll.guildId)
+      .then(json => {
+        if (json.error) {
+          return;
+        }
+        setRoles(json.roles);
+      });
+    }
+  }, [userContext.token, poll.guildId]);
+
+  useEffect(() => {
+    if (form.values.minChoices !== minChoices)
+      form.values.minChoices = minChoices;
+  }, [minChoices, form.values]);
+  useEffect(() => {
+    if (form.values.maxChoices !== maxChoices)
+      form.values.maxChoices = maxChoices;
+  }, [maxChoices, form.values]);
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+    if (maxChoices > form.values.entries.length) {
+      setMaxChoices(form.values.entries.length);
+      if (fixedSelectAmount) {
+        setMinChoices(maxChoices);
+      }
+    }
+    if (!fixedSelectAmount && minChoices >= form.values.entries.length) {
+      setMinChoices(form.values.entries.length - 1);
+    }
+    form.values.maxChoices = maxChoices;
+  }, [form.values, minChoices, maxChoices, fixedSelectAmount, loading]);
 
   const fields = form.values.entries.map((entry, index) => (
     <Stack key={index}>
@@ -121,16 +164,28 @@ const PollEditor = () => {
       <Paper className={"polleditor"} style={{ position: 'relative' }}>
         <LoadingOverlay visible={loading} />
         <form onSubmit={form.onSubmit((values) => {
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/polls/${guildId}/${pollId}`, {
-            method: 'PATCH',
-            body: JSON.stringify(values),
-            credentials: "include",
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8',
-            },
-          })
-            .then((response) => response.json())
-            .then((json) => console.log(json))
+          showNotification({
+            id: 'update-poll',
+            loading: true,
+            title: 'Updating Poll',
+            message: 'Poll is not updated yet, you cannot close this yet',
+            autoClose: false,
+            disallowClose: true,
+          });
+          setSaving(true);
+
+          patchPoll(userContext.token, pollId, values)
+            .then((json) => {
+              updateNotification({
+                id: 'update-poll',
+                color: 'teal',
+                title: 'Poll was updated',
+                message: 'Notification will close in 3 seconds, you can close this notification now',
+                icon: <FontAwesomeIcon icon={faCheck}/>,
+                autoClose: 3000,
+              });
+              setSaving(false);
+            })
         })}>
         <Stack>
           <Title order={1}>Poll Editor</Title>
@@ -152,42 +207,24 @@ const PollEditor = () => {
           <Switch label="Fixed select amount?" checked={fixedSelectAmount} onChange={(event) => {
             const checked = event.currentTarget.checked;
             if (!checked) {
-              if (form.values.maxChoices <= 1) {
-                form.values.maxChoices = form.values.maxChoices + 1;
+              if (maxChoices <= 1) {
+                setMaxChoices(maxChoices + 1);
               }
-              form.values.minChoices = form.values.maxChoices - 1
-              setMinChoices(form.values.minChoices);
-              setMaxChoices(form.values.maxChoices);
+              setMinChoices(maxChoices - 1)
             }
             setFixedSelectAmount(checked)
           }}/>
           {
             fixedSelectAmount ? 
-            <Slider p="md" min={1} max={5} value={maxChoices}
-              marks={[
-                { value: 1, label: '1' },
-                { value: 2, label: '2' },
-                { value: 3, label: '3' },
-                { value: 4, label: '4' },
-                { value: 5, label: '5' },
-              ]}
+            <Slider min={1} max={form.values.entries.length} value={maxChoices}
+              marks={[...Array(form.values.entries.length).keys()].map(i => {return { value: i+1}})}
               onChange={(value) => {
-                form.values.minChoices = value;
-                form.values.maxChoices = value;
                 setMinChoices(value);
                 setMaxChoices(value);
               }}
-            /> : <RangeSlider p="md" min={1} max={5} minRange={1} value={[minChoices, maxChoices]}
-              marks={[
-                { value: 1, label: '1' },
-                { value: 2, label: '2' },
-                { value: 3, label: '3' },
-                { value: 4, label: '4' },
-                { value: 5, label: '5' },
-              ]}
+            /> : <RangeSlider min={1} max={form.values.entries.length} minRange={1} value={[minChoices, maxChoices]}
+              marks={[...Array(form.values.entries.length).keys()].map(i => {return { value: i+1}})}
               onChange={([min, max]) => {
-                form.values.minChoices = min;
-                form.values.maxChoices = max;
                 setMinChoices(min);
                 setMaxChoices(max);
               }}
@@ -209,7 +246,7 @@ const PollEditor = () => {
             </>
           }
           <Group position="right" mt="md">
-            <Button type="submit" color="green">Update Poll</Button>
+            <Button type="submit" color="green" loading={saving}>Update Poll</Button>
           </Group>
         </Stack>
         </form>

@@ -7,7 +7,7 @@ import "./Page.scss";
 import "./Guilds.scss";
 
 const Guilds = () => {
-  const [userContext, setUserContext] = useContext(UserContext);
+  const [userContext] = useContext(UserContext);
 
   return (
     <div className="main">

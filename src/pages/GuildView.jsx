@@ -11,7 +11,7 @@ import "./Page.scss";
 import "./GuildView.scss";
 
 const GuildView = () => {
-  const [userContext, setUserContext] = useContext(UserContext);
+  const [userContext] = useContext(UserContext);
   let { guildId } = useParams();
   return (
     <>

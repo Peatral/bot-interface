@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useClickOutside } from '@mantine/hooks';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faColumns,
   faPen,
@@ -56,11 +56,11 @@ const Userdetails = () => {
           </li>
           <li>
             <FontAwesomeIcon icon={faPen} className="icon" />
-            <Link to={`/proposals`}>Proposals</Link>
+            <Link to={`/polls`}>Polls</Link>
           </li>
           <li>
             <FontAwesomeIcon icon={faSignOutAlt} className="icon" />
-            <a onClick={logoutHandler}>Logout</a>
+            <a onClick={logoutHandler} href="/">Logout</a>
           </li>
         </ul>
       </div>

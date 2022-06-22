@@ -7,7 +7,7 @@ import "./Page.scss";
 import Loader from "../components/generic/Loader";
 
 const ProtectedRoute = () => {
-  const [userContext, setUserContext] = useContext(UserContext);
+  const [userContext] = useContext(UserContext);
 
   return userContext.token === null ? (
     <Navigate to="/" />

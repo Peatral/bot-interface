@@ -7,7 +7,7 @@ import "./Page.scss";
 
 const LoginCallback = () => {
   const [userContext, setUserContext] = useContext(UserContext);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const [redirect, setRedirect] = useState(false);
 

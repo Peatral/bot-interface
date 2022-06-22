@@ -11,7 +11,7 @@ import Loader from "../generic/Loader";
 import Userdetails from "./Userdetails";
 
 const Header = () => {
-  const [userContext, setUserContext] = useContext(UserContext);
+  const [userContext] = useContext(UserContext);
 
   return (
     <header className="header">
