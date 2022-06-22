@@ -29,7 +29,7 @@ const Polls = () => {
   }, [userContext.token, userContext.details])
 
   return (
-    <Container size="md" style={{minWidth:"50vw"}}>
+    <Container size="md" style={{minWidth:"40vw"}}>
       <Stack>
         {
           loading ? <> 
