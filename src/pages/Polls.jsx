@@ -1,17 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Stack, Paper, Title, Container, Button, Space, Group, Skeleton, Card, Badge } from "@mantine/core";
 
 import { UserContext } from "../context/UserContext";
 import { getAuthorPolls } from "../apilib";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { getAsTime } from "../timehelper";
 
 const Polls = () => {
+  const navigate = useNavigate();
   const [userContext] = useContext(UserContext);
 
   const [polls, setPolls] = useState([]);
@@ -54,26 +52,29 @@ const Polls = () => {
                     <Title order={2}>{poll.title}</Title>
                     <Group>
                       {
-                        poll.maxChoices === 1 ? <Badge color="pink" variant="light">
-                          Single Select
-                        </Badge> : <Badge color="yellow" variant="light">
-                          Multi Select
-                        </Badge>
+                        poll.maxChoices === 1 
+                        ? <Badge color="pink" variant="light">Single Select</Badge> 
+                        : <Badge color="yellow" variant="light">Multi Select</Badge>
                       }
                       {
-                        poll.status === "SCHEDULED" && (<Badge color="blue" variant="light">Scheduled</Badge>)
+                        {
+                          "SCHEDULED": <Badge color="blue" variant="light">Scheduled</Badge>,
+                          "OPEN": <Badge color="green" variant="light">Active</Badge>,
+                          "CLOSED": <Badge color="red" variant="light">Closed</Badge>,
+                        }[poll.status]
                       }
                       {
-                        poll.status === "OPEN" && (<Badge color="green" variant="light">Active</Badge>)
-                      }
-                      {
-                        poll.status === "CLOSED" && (<Badge color="red" variant="light">Closed</Badge>)
+                        {
+                          "m": <Badge color="blue" variant="light">{ `${getAsTime(poll.duration).amount} Minute(s)` }</Badge>,
+                          "h": <Badge color="green" variant="light">{ `${getAsTime(poll.duration).amount} Hour(s)` }</Badge>,
+                          "d": <Badge color="red" variant="light">{ `${getAsTime(poll.duration).amount} Day(s)` }</Badge>,
+                        }[getAsTime(poll.duration).unit]
                       }
                     </Group>
                   </Group>
                   <Space h="md"/>
                   <Group grow>
-                    <Button component={Link} to={`/polls/${poll._id}`}>View</Button>
+                    <Button onClick={() => navigate(`/polls/${poll._id}`)} disabled={poll.status === "OPEN" || poll.status === "CLOSED"}>View</Button>
                   </Group>
                 </Card>
               ))

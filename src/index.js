@@ -17,7 +17,7 @@ import NotFound from "./pages/NotFound";
 
 import { UserProvider } from "./context/UserContext";
 
-import { MantineProvider, AppShell, Container } from '@mantine/core';
+import { MantineProvider, AppShell } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 
 import { HashRouter, Routes, Route } from "react-router-dom";

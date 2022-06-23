@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
@@ -34,7 +34,12 @@ import { getDiff } from "recursive-diff";
 
 import "./PollEditor.scss";
 
+import { Durations, getAsTime } from "../timehelper";
+
 const PollEditor = () => {
+
+  const MAX_TIME_INTERVALLS = useMemo(() => { return {"m": 60 * 24, "h": 24 * 7, "d": 7}}, []);
+
   const { pollId } = useParams();
   const navigate = useNavigate();
   const [userContext] = useContext(UserContext);
@@ -45,7 +50,7 @@ const PollEditor = () => {
     votes: [],
     title: "",
     status: "SCHEDULED",
-    duration: 1000 * 60 * 5,
+    duration: Durations.MINUTES * 5,
     minChoices: 1,
     maxChoices: 1,
     roleId: null,
@@ -62,18 +67,21 @@ const PollEditor = () => {
   // Yeh, this is kinda broken, just be sure to never update this in the form without updating the states
   const [minChoices, setMinChoices] = useState(1);
   const [maxChoices, setMaxChoices] = useState(1);
+  const [duration, setDuration] = useState(3);
+  const [durationUnit, setDurationUnit] = useState("m");
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const [pollModified, setPollModified] = useState(false);
 
+  // The poll as a form
   const form = useForm({
     initialValues: {
       minChoices: 1,
       maxChoices: 1,
       roleId: "",
-      duration: 1000,
+      duration: Durations.MINUTES * 5,
       entries: formList([{
         name: "Yes",
         description: "Your wish shall be granted...",
@@ -93,6 +101,9 @@ const PollEditor = () => {
     }),
   });
 
+  // hooks below
+
+  // Fetching poll from db, only during loading/saving
   useEffect(() => {
     if (!loading && !saving) {
       return;
@@ -115,10 +126,17 @@ const PollEditor = () => {
         form.values.roleId = json.roleId;
         form.values.duration = json.duration;
 
+        const duration = json.duration;
+
+        const durationData = getAsTime(duration);
+        setDurationUnit(durationData.unit);
+        setDuration(durationData.amount);
+
         setLoading(false);
       });
   }, [pollId, setMinChoices, setMaxChoices, setFixedSelectAmount, form.values, setLoading, userContext.token, loading, saving]);
 
+  // Fetch roles
   useEffect(() => {
     if (poll.guildId) {
       getRoles(userContext.token, poll.guildId)
@@ -131,6 +149,7 @@ const PollEditor = () => {
     }
   }, [userContext.token, poll.guildId]);
 
+  // Setup wonky sliders
   useEffect(() => {
     if (form.values.minChoices !== minChoices)
       form.values.minChoices = minChoices;
@@ -155,6 +174,15 @@ const PollEditor = () => {
     form.values.maxChoices = maxChoices;
   }, [form.values, minChoices, maxChoices, fixedSelectAmount, loading]);
 
+  // Setup time picker
+  useEffect(() => {
+    setDuration(Math.min(duration, MAX_TIME_INTERVALLS[durationUnit]));
+  }, [durationUnit, duration, MAX_TIME_INTERVALLS])
+  useEffect(() => {
+    form.values.duration = {"m": Durations.MINUTES, "h": Durations.HOURS, "d": Durations.DAYS}[durationUnit] * duration;
+  }, [duration, durationUnit, form.values, MAX_TIME_INTERVALLS]);
+
+  // Change detector, setting update button disabled/enabled
   useEffect(() => {
     if (loading || saving) {
       return;
@@ -171,9 +199,10 @@ const PollEditor = () => {
     ));
     // now we can see if there is a diff or not
     setPollModified(difflist.length > 0);  
-  }, [form.values, poll, minChoices, maxChoices]);
+  }, [form.values, poll, minChoices, maxChoices, duration, durationUnit, loading, saving]);
 
 
+  // The entries
   const fields = form.values.entries.map((entry, index) => (
     <Stack key={index}>
       <Divider variant="dashed"/>
@@ -219,7 +248,6 @@ const PollEditor = () => {
             disallowClose: true,
           });
           
-          
           patchPoll(userContext.token, pollId, values)
             .then((json) => {
               setPoll(json);
@@ -237,7 +265,17 @@ const PollEditor = () => {
         <Stack>
           <Title order={1}>Poll Editor</Title>
           <TextInput placeholder="Pineapple on pizza? 🍕" label="Question" required {...form.getInputProps('title')}/>
-          <NumberInput defaultValue={30000} placeholder="The duration" label="How long should the poll be?" required />
+          <Group grow>
+            <NumberInput value={duration} placeholder="The duration" label="How long should the poll be?" required 
+              min={1} 
+              max={MAX_TIME_INTERVALLS[durationUnit]}
+              onChange={(v) => setDuration(v)}
+            />
+            <Select value={durationUnit} label="(The time unit measured in)" placeholder="Pick one" required 
+              data={[{ value: "m", label : "Minutes" }, { value: "h", label : "Hours" },{ value: "d", label : "Days" }]}
+              onChange={(v) => setDurationUnit(v)}
+            />
+          </Group>
           {
             roles.length > 0 &&
             <Select label="The this poll is targeted at" placeholder="Pick one" {...form.getInputProps('roleId')}
@@ -293,7 +331,7 @@ const PollEditor = () => {
             </>
           }
           <Group position="right" mt="md">
-            <Button disabled={!pollModified} type="submit" color="green" loading={saving}>Update Poll</Button>
+            <Button disabled={!pollModified || (poll.status === "OPEN" || poll.status === "CLOSED")} type="submit" color="green" loading={saving}>Update Poll</Button>
           </Group>
         </Stack>
         </form>

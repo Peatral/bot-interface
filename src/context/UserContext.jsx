@@ -15,9 +15,11 @@ const UserProvider = (props) => {
 
   const fetchDetailsFail = () => {
     showNotification({
+      id: "details-fail",
       color: "red",
       title: "Could not load user details...",
       message: "This happens sometimes, try refreshing the page",
+      autoClose: 3000,
     });
     // TODO: catch no user details loading
     setState((oldValues) => {
@@ -27,11 +29,13 @@ const UserProvider = (props) => {
 
   const fetchGuildsFail = () => {
     showNotification({
+      id: "guilds-fail",
       color: "red",
       title: "Could not load guilds...",
       message: "This happens sometimes, try refreshing the page",
+      autoClose: 3000,
     });
-    // TODO: catch no user details loading
+    // TODO: catch no guilds loading
     setState((oldValues) => {
       return { ...oldValues, guilds: null };
     });
@@ -145,6 +149,11 @@ const UserProvider = (props) => {
     }).then(async (response) => {
       if (response.ok) {
         const data = await response.json();
+
+        // TODO: rate limiting why the f i dunno
+        if (!Array.isArray(data)) {
+          return fetchGuildsFail();
+        }
 
         setState((oldValues) => {
           return { ...oldValues, guilds: data };

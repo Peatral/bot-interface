@@ -45,7 +45,7 @@ const Userdetails = () => {
           src={`https://cdn.discordapp.com/avatars/${userContext.details.id}/${userContext.details.avatar}`}
           alt="Avatar"
         />} opened={opened} onOpen={handlers.open} onClose={handlers.close}>
-          <Menu.Label>General</Menu.Label>
+          <Menu.Label>{`${userContext.details.username}#${userContext.details.discriminator}`}</Menu.Label>
           <Menu.Item onClick={() => navigate(`/dashboard`)} icon={<FontAwesomeIcon icon={faColumns}/>}>Dashboard</Menu.Item>
           <Menu.Item onClick={() => navigate(`/guilds`)} icon={<FontAwesomeIcon icon={faServer}/>}>Guilds</Menu.Item>
           <Menu.Item onClick={() => navigate(`/polls`)} icon={<FontAwesomeIcon icon={faPen}/>}>Polls</Menu.Item>
