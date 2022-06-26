@@ -36,7 +36,7 @@ export function patchPoll(token, pollId, changes) {
 }
 
 export function getAuthorPolls(token, authorId) {
-  return fetch(`${process.env.REACT_APP_BACKEND_URL}/polls/author/${authorId}`, {
+  return fetch(`${process.env.REACT_APP_BACKEND_URL}/polls/filter?authorId=${authorId}`, {
     method: "GET",
     credentials: "include",
     headers: {

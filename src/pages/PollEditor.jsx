@@ -83,13 +83,13 @@ const PollEditor = () => {
       roleId: "",
       duration: Durations.MINUTES * 5,
       entries: formList([{
-        name: "Yes",
+        label: "Yes",
         description: "Your wish shall be granted...",
-        emoji: ""
+        icon: ""
       }, {
-        name: "No",
+        label: "No",
         description: "Therefore I rightfully object and say: No",
-        emoji: ""
+        icon: ""
       }]),
       title: "",
     },
@@ -140,12 +140,12 @@ const PollEditor = () => {
   useEffect(() => {
     if (poll.guildId) {
       getRoles(userContext.token, poll.guildId)
-      .then(json => {
-        if (json.error) {
-          return;
-        }
-        setRoles(json.roles);
-      });
+        .then(json => {
+          if (json.error) {
+            return;
+          }
+          setRoles(json.roles);
+        });
     }
   }, [userContext.token, poll.guildId]);
 
@@ -195,8 +195,14 @@ const PollEditor = () => {
     // strip the unwanted diffs out
     difflist = difflist.filter(diff => !(diff.op === "delete" 
         && diff.path.length === 1 
-        && ["status", "votes", "id", "__v"].map(s => diff.path[0].toLocaleLowerCase().includes(s)).includes(true)
+        && ["_id", "__v", "status", "startTimestamp", "endTimestamp", "authorId", "guildId", "channelId", "messageId"].map(s => diff.path[0].includes(s)).includes(true)
     ));
+
+    difflist = difflist.filter(diff => !(diff.op === "delete" 
+        && diff.path.length === 3
+        && diff.path[0] === "entries" && diff.path[2] === "_id"
+    ));
+
     // now we can see if there is a diff or not
     setPollModified(difflist.length > 0);  
   }, [form.values, poll, minChoices, maxChoices, duration, durationUnit, loading, saving]);
@@ -210,14 +216,13 @@ const PollEditor = () => {
           placeholder="Pineapples rock! 🤘" 
           label="Answer" 
           required 
-          {...form.getListInputProps('entries', index, 'name')} 
-          value={entry.name}/>
+          {...form.getListInputProps('entries', index, 'label')} 
+        />
         <TextInput 
           placeholder="(Sweet pinapple + Juicy Tomato 🍅)" 
           label="Description" 
           required 
-          {...form.getListInputProps('entries', index, 'description')} 
-          value={entry.description}
+          {...form.getListInputProps('entries', index, 'description')}
         />
       <Button
         color="red"
@@ -316,7 +321,7 @@ const PollEditor = () => {
             />
           }
           <Button onClick={() =>
-            form.addListItem('entries', { name: '', description: "", emoji: "" })
+            form.addListItem('entries', { label: '', description: "", emoji: "" })
           } disabled={form.values.entries.length >= 5}>
             Add Entry
           </Button>
