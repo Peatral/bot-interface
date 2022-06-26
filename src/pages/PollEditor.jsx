@@ -17,7 +17,10 @@ import {
   Divider, 
   LoadingOverlay, 
   Container, 
-  Affix 
+  Affix,
+  Text,
+  Code,
+  Tooltip,
 } from '@mantine/core';
 import { showNotification, updateNotification } from '@mantine/notifications';
 import { useForm, formList } from '@mantine/form';
@@ -234,6 +237,9 @@ const PollEditor = () => {
     </Stack>
   ));
 
+
+  const [copiedID, setCopiedID] = useState(false);
+
   return (
     <Container className={"polleditor-container"}>
       <Affix position={{ top: 60, left: 20 }}>
@@ -335,9 +341,24 @@ const PollEditor = () => {
               <Divider />
             </>
           }
-          <Group position="right" mt="md">
+          <Group position="apart" mt="md">
+            {
+              (poll.status === "OPEN" || poll.status === "CLOSED")
+              ? <Text>Can't start poll anymore</Text>
+              : <Text>Start poll with <Tooltip
+              label={copiedID ? "Copied ID" : "Copy ID"}
+              color={copiedID ? "green" : "gray"}
+              withArrow
+            ><Code onClick={() => {
+              navigator.clipboard.writeText(poll._id);
+              setCopiedID(true);
+              setTimeout(() => setCopiedID(false), 3000);
+            }}>{`/poll start ${poll._id}`}</Code></Tooltip>
+            </Text>
+            }
             <Button disabled={!pollModified || (poll.status === "OPEN" || poll.status === "CLOSED")} type="submit" color="green" loading={saving}>Update Poll</Button>
           </Group>
+          
         </Stack>
         </form>
       </Paper>
