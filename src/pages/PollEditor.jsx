@@ -238,7 +238,7 @@ const PollEditor = () => {
   ));
 
 
-  const [copiedID, setCopiedID] = useState(false);
+  const [copiedCommand, setCopiedCommand] = useState(false);
 
   return (
     <Container className={"polleditor-container"}>
@@ -346,14 +346,14 @@ const PollEditor = () => {
               (poll.status === "OPEN" || poll.status === "CLOSED")
               ? <Text>Can't start poll anymore</Text>
               : <Text>Start poll with <Tooltip
-              label={copiedID ? "Copied ID" : "Copy ID"}
-              color={copiedID ? "green" : "gray"}
+              label={copiedCommand ? "Copied command" : "Copy command"}
+              color={copiedCommand ? "green" : "gray"}
               withArrow
             ><Code onClick={() => {
-              navigator.clipboard.writeText(poll._id);
-              setCopiedID(true);
-              setTimeout(() => setCopiedID(false), 3000);
-            }}>{`/poll start ${poll._id}`}</Code></Tooltip>
+              navigator.clipboard.writeText(`/poll start id:${poll._id}`);
+              setCopiedCommand(true);
+              setTimeout(() => setCopiedCommand(false), 3000);
+            }}>/poll start id:{poll._id}</Code></Tooltip>
             </Text>
             }
             <Button disabled={!pollModified || (poll.status === "OPEN" || poll.status === "CLOSED")} type="submit" color="green" loading={saving}>Update Poll</Button>
