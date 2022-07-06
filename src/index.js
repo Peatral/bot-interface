@@ -20,12 +20,12 @@ import { UserProvider } from "./context/UserContext";
 import { MantineProvider, AppShell } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 
-import { Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <BrowserRouter>
       <MantineProvider theme={{ colorScheme: 'dark' }}>
         <NotificationsProvider>
           <UserProvider>
@@ -60,7 +60,7 @@ ReactDOM.render(
           </UserProvider>
         </NotificationsProvider>
       </MantineProvider>
-    </Router>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
