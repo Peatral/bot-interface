@@ -1,0 +1,13 @@
+.polleditorContainer {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  
+  .polleditor {
+    min-width: 40vw;
+    max-width: 80vw;
+    padding: 3rem;
+  }
+}
