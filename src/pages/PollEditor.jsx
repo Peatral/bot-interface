@@ -223,8 +223,7 @@ const PollEditor = () => {
         />
         <TextInput 
           placeholder="(Sweet pinapple + Juicy Tomato 🍅)" 
-          label="Description" 
-          required 
+          label="Description"
           {...form.getListInputProps('entries', index, 'description')}
         />
       <Button
