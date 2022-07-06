@@ -24,5 +24,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
-  }
+  },
+  "homepage": "https://www.peatral.xyz/bot"
 }
