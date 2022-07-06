@@ -439,7 +439,7 @@ const PollEditor = () => {
             )}
             <Group position="apart" mt="md">
               {poll.status === "OPEN" || poll.status === "CLOSED" ? (
-                <Text>Can't start poll anymore</Text>
+                <Text>Can&apos;t start poll anymore</Text>
               ) : (
                 <Text>
                   Start poll with{" "}
