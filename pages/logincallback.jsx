@@ -7,7 +7,6 @@ const LoginCallback = () => {
   const Router = useRouter();
 
   useEffect(() => {
-    console.log(Router.query.token);
     if (Router.query.token) {
       setUserContext((oldValues) => {
         return {...oldValues, token: Router.query.token};
