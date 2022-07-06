@@ -20,12 +20,12 @@ import { UserProvider } from "./context/UserContext";
 import { MantineProvider, AppShell } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <Router basename="/bot">
       <MantineProvider theme={{ colorScheme: 'dark' }}>
         <NotificationsProvider>
           <UserProvider>
