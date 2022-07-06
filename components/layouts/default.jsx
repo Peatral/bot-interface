@@ -5,7 +5,7 @@ import Footer from "../footer";
 import {MantineProvider, AppShell} from "@mantine/core";
 import { UserContext } from "../user_context";
 import HeaderLink from "../header_link";
-import Userdetails from "../Userdetails";
+import Userdetails from "../../components/userdetails";
 import Loader from "../../components/loader";
 
 export default function DefaultLayout({children}) {

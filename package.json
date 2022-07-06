@@ -43,5 +43,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://www.peatral.xyz/bot"
+  "homepage": "https://www.peatral.xyz/bot",
+  "devDependencies": {
+    "eslint": "^8.19.0"
+  }
 }
