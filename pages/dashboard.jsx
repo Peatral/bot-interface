@@ -11,7 +11,7 @@ export async function getStaticProps(context) {
     props: {
       protected: true,
     },
-  }
+  };
 }
 
 export default Dashboard;

@@ -1,5 +1,3 @@
-
-
 import "../styles/globals.scss";
 import "../styles/peat.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -20,7 +18,7 @@ library.add(SolidIcons.faSun);
 library.add(SolidIcons.faMoon);
 
 import CustomHead from "../components/head";
-import { ThemeProvider } from "../components/theme_context";
+import {ThemeProvider} from "../components/theme_context";
 import {UserProvider} from "../components/user_context";
 import RouteProtector from "../components/route_protector";
 
@@ -38,7 +36,7 @@ export default function MyApp({Component, pageProps}) {
       <UserProvider>
         <ThemeProvider>
           <RouteProtector pageProps={pageProps}>
-            {getLayout(<Component {...pageProps}/>)}
+            {getLayout(<Component {...pageProps} />)}
           </RouteProtector>
         </ThemeProvider>
       </UserProvider>

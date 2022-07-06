@@ -1,24 +1,27 @@
-import React, { useContext } from "react";
-import { UserContext } from "../../components/user_context";
-import { useRouter } from 'next/router'
+import React, {useContext} from "react";
+import {UserContext} from "../../components/user_context";
+import {useRouter} from "next/router";
 import Guild from "../../components/guild";
 
-import { Container, Affix, Button, Skeleton, Group, Stack } from "@mantine/core";
+import {Container, Affix, Button, Skeleton, Group, Stack} from "@mantine/core";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 const GuildView = () => {
   const [userContext] = useContext(UserContext);
   const Router = useRouter();
-  const guildId = Router.query.id
+  const guildId = Router.query.id;
   return (
     <>
       <Container className="main">
-        <Affix position={{ top: 60, left: 20 }}>
-          <Button onClick={() => Router.push(`/guilds`)} leftIcon={<FontAwesomeIcon icon={faArrowLeft}/>}>Go back to Guild Overview</Button>
+        <Affix position={{top: 60, left: 20}}>
+          <Button
+            onClick={() => Router.push(`/guilds`)}
+            leftIcon={<FontAwesomeIcon icon={faArrowLeft} />}
+          >
+            Go back to Guild Overview
+          </Button>
         </Affix>
         <div className="page-display-middle">
           {userContext.guilds && Array.isArray(userContext.guilds) ? (
@@ -46,8 +49,8 @@ const GuildView = () => {
 export async function getStaticPaths() {
   return {
     paths: [], //indicates that no page needs be created at build time
-    fallback: 'blocking' //indicates the type of fallback
-  }
+    fallback: "blocking", //indicates the type of fallback
+  };
 }
 
 export async function getStaticProps(context) {
@@ -55,7 +58,7 @@ export async function getStaticProps(context) {
     props: {
       protected: true,
     },
-  }
+  };
 }
 
-export default GuildView
+export default GuildView;

@@ -1,0 +1,7 @@
+.next/
+.vscode/
+.git/
+node_modules/
+public/reveal.js
+build/
+.swc/

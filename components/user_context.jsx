@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 
-import { showNotification } from '@mantine/notifications';
+import {showNotification} from "@mantine/notifications";
 
 const UserContext = React.createContext([{}, () => {}]);
 
@@ -23,9 +23,9 @@ const UserProvider = (props) => {
     });
     // TODO: catch no user details loading
     setState((oldValues) => {
-      return { ...oldValues, details: null };
+      return {...oldValues, details: null};
     });
-  }
+  };
 
   const fetchGuildsFail = () => {
     showNotification({
@@ -37,9 +37,9 @@ const UserProvider = (props) => {
     });
     // TODO: catch no guilds loading
     setState((oldValues) => {
-      return { ...oldValues, guilds: null };
+      return {...oldValues, guilds: null};
     });
-  }
+  };
 
   /**
    * Silent Refresh
@@ -51,25 +51,27 @@ const UserProvider = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(async (response) => {
-      if (response.ok) {
-        const data = await response.json();
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
 
+          setState((oldValues) => {
+            return {...oldValues, token: data.token};
+          });
+        } else {
+          setState((oldValues) => {
+            return {...oldValues, token: null, details: null, guilds: null};
+          });
+        }
+        // call refreshToken every 5 minutes to renew the authentication token.
+        setTimeout(silentRefresh, 5 * 60 * 1000);
+      })
+      .catch((err) => {
         setState((oldValues) => {
-          return { ...oldValues, token: data.token };
+          return {...oldValues, token: null, details: null, guilds: null};
         });
-      } else {
-        setState((oldValues) => {
-          return { ...oldValues, token: null, details: null, guilds: null };
-        });
-      }
-      // call refreshToken every 5 minutes to renew the authentication token.
-      setTimeout(silentRefresh, 5 * 60 * 1000);
-    }).catch(err => {
-      setState((oldValues) => {
-        return { ...oldValues, token: null, details: null, guilds: null };
       });
-    });
   }, [setState]);
 
   useEffect(() => {
@@ -105,26 +107,28 @@ const UserProvider = (props) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${state.token}`,
       },
-    }).then(async (response) => {
-      let data = null
-      
-      if (response.ok) {
-        data = await response.json();
-      } else {
-        return fetchDetailsFail();
-      }
+    })
+      .then(async (response) => {
+        let data = null;
 
-      // for some reason it may be that the data is NOT the user details
-      if (!data.id) {
-        return fetchDetailsFail();
-      }
+        if (response.ok) {
+          data = await response.json();
+        } else {
+          return fetchDetailsFail();
+        }
 
-      setState((oldValues) => {
-        return { ...oldValues, details: data };
+        // for some reason it may be that the data is NOT the user details
+        if (!data.id) {
+          return fetchDetailsFail();
+        }
+
+        setState((oldValues) => {
+          return {...oldValues, details: data};
+        });
+      })
+      .catch((err) => {
+        fetchDetailsFail();
       });
-    }).catch(err => {
-      fetchDetailsFail();
-    });
   }, [setState, state.token]);
 
   useEffect(() => {
@@ -146,34 +150,35 @@ const UserProvider = (props) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${state.token}`,
       },
-    }).then(async (response) => {
-      if (response.ok) {
-        const data = await response.json();
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
 
-        // TODO: rate limiting why the f i dunno
-        if (!Array.isArray(data)) {
-          return fetchGuildsFail();
+          // TODO: rate limiting why the f i dunno
+          if (!Array.isArray(data)) {
+            return fetchGuildsFail();
+          }
+
+          setState((oldValues) => {
+            return {...oldValues, guilds: data};
+          });
+        } else {
+          fetchGuildsFail();
         }
-
-        setState((oldValues) => {
-          return { ...oldValues, guilds: data };
-        });
-      } else {
+      })
+      .catch((err) => {
         fetchGuildsFail();
-      }
-    }).catch(err => {
-      fetchGuildsFail();
-    });
+      });
   }, [setState, state.token]);
 
-  
   useEffect(() => {
     // fetch only when guilds are not present
     if (!state.guilds && state.token) {
       fetchGuilds();
     }
   }, [state.guilds, fetchGuilds, state.token]);
-  
+
   return (
     <UserContext.Provider value={[state, setState]}>
       {props.children}
@@ -181,4 +186,4 @@ const UserProvider = (props) => {
   );
 };
 
-export { UserContext, UserProvider };
+export {UserContext, UserProvider};

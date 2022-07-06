@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 
 import UnauthorizedPage from "./unauthorized";
 import {UserContext} from "../components/user_context";
@@ -22,15 +22,9 @@ export default function RouteProtector({children, pageProps}) {
         </div>
       </DefaultLayout>
     ) : (
-      <>
-        { children }
-      </>
+      <>{children}</>
     );
   }
 
-  return(
-    <>
-      { children }
-    </>
-  )
+  return <>{children}</>;
 }

@@ -1,8 +1,8 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCrown, faImage } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCrown, faImage} from "@fortawesome/free-solid-svg-icons";
 
-import { Tooltip } from "@mantine/core";
+import {Tooltip} from "@mantine/core";
 
 import styles from "../styles/Guild.module.scss";
 
