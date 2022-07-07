@@ -2,9 +2,10 @@ import React, {useEffect, useContext, useState} from "react";
 import {UserContext} from "@components/context/UserContext";
 import {useRouter} from "next/router";
 
-const Router = useRouter();
+
 
 const LoginCallback = () => {
+  const Router = useRouter();
   const [userContext, setUserContext] = useContext(UserContext);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const LoginCallback = () => {
     } else {
       Router.push({pathname: "/"});
     }
-  }, [userContext]);
+  }, [userContext, Router, setUserContext]);
 
   return (
     <div className="main">
