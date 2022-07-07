@@ -12,7 +12,7 @@ import {
 
 import {Menu, Divider} from "@mantine/core";
 
-import styles from "../styles/Userdetails.module.scss";
+import styles from "./Userdetails.module.scss";
 
 const Userdetails = () => {
   const [userContext, setUserContext] = useContext(UserContext);
