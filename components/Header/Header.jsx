@@ -33,4 +33,4 @@ export function HeaderLink({label, link, style, external}) {
   );
 }
 
-export default {HeaderBar, HeaderItem, HeaderLink}
+export default {HeaderBar, HeaderItem, HeaderLink};

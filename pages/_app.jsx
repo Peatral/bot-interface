@@ -17,10 +17,10 @@ library.add(Brands.faTwitch);
 library.add(SolidIcons.faSun);
 library.add(SolidIcons.faMoon);
 
-import CustomHead from "@components/Head/Head";
+import {CustomHead} from "@components/Head";
 import {ThemeProvider} from "@components/context/ThemeContext";
 import {UserProvider} from "@components/context/UserContext";
-import RouteProtector from "@components/RouteProtector/RouteProtector";
+import {RouteProtector} from "@components/RouteProtector";
 
 export default function MyApp({Component, pageProps}) {
   const defaultPageLayout = function (page) {

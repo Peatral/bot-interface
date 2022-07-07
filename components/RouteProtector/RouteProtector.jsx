@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 
 import UnauthorizedPage from "./Unauthorized";
 import {UserContext} from "@components/context/UserContext";
-import Loader from "@components/Loader/Loader";
+import {Loader} from "@components/Loader";
 import DefaultLayout from "@layouts/Default";
 
 export default function RouteProtector({children, pageProps}) {

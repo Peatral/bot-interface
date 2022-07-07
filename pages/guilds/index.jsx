@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
 import Link from "next/link";
 import {UserContext} from "@components/context/UserContext";
-import Guild from "@components/Guild/Guild";
-import Loader from "@components/Loader/Loader";
+import {Guild} from "@components/Guild";
+import {Loader} from "@components/Loader";
 import styles from "@styles/pages/Guilds.module.scss";
 
 const Guilds = () => {

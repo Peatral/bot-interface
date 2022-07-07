@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {useRouter} from "next/router";
 import {UserContext} from "@components/context/UserContext";
-import Guild from "@components/Guild/Guild";
+import {Guild} from "@components/Guild";
 
 import {Container, Affix, Button, Skeleton, Group, Stack} from "@mantine/core";
 
