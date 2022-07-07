@@ -4,9 +4,12 @@ import styles from "@styles/pages/Home.module.scss";
 const Home = () => {
   return (
     <div className="main">
-      <h1 className="page-display-middle">
-        You just woke GPD-Bot up if he was asleep...
-      </h1>
+      <div className="page-display-middle">
+        <h1>
+          You just woke GPD-Bot up if he was asleep...
+        </h1>
+        <p>Actually not, he will never be sleepy again</p>
+      </div>
       <div className={styles.eyeholder}>
         <img
           className={styles.boteye}

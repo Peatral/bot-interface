@@ -10,7 +10,7 @@
 }
 
 @keyframes blink {
-  70% {
+  80% {
     position: relative;
     width: 10vh;
     height: 10vh;
@@ -18,9 +18,9 @@
   }
   85% {
     width: 10vh;
-    height: 1vh;
+    height: 0vh;
     position: relative;
-    top: -4.5vh;
+    top: -5vh;
   }
 }
 

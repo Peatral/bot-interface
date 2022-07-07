@@ -536,6 +536,7 @@ section[id]::before {
   max-width: 50%;
 
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
 }
