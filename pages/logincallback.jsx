@@ -2,12 +2,13 @@ import React, {useEffect, useContext, useState} from "react";
 import {UserContext} from "@components/context/UserContext";
 import {useRouter} from "next/router";
 
+const Router = useRouter();
+
 const LoginCallback = () => {
   const [userContext, setUserContext] = useContext(UserContext);
-  const Router = useRouter();
 
   useEffect(() => {
-    if (Router.query.token) {
+    if (Router.query.token && userContext.token !== Router.query.token) {
       setUserContext((oldValues) => {
         return {...oldValues, token: Router.query.token};
       });
@@ -18,7 +19,7 @@ const LoginCallback = () => {
     } else {
       Router.push({pathname: "/"});
     }
-  }, [setUserContext, Router, userContext]);
+  }, [userContext]);
 
   return (
     <div className="main">

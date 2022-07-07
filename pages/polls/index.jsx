@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 
 import {UserContext} from "@components/context/UserContext";
-import {getAuthorPolls} from "@utils/apilib";
+import {getAuthorPolls} from "@utils/botapilib";
 
 import {getAsTime} from "@utils/timehelper";
 

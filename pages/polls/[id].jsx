@@ -25,7 +25,7 @@ import {
 import {showNotification, updateNotification} from "@mantine/notifications";
 import {useForm, formList} from "@mantine/form";
 
-import {patchPoll, getPoll, getRoles} from "@utils/apilib";
+import {patchPoll, getPoll, getRoles} from "@utils/botapilib";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faCheck} from "@fortawesome/free-solid-svg-icons";

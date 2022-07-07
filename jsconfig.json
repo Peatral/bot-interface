@@ -7,7 +7,7 @@
       "@utils/*": ["utils/*"],
       "@models/*": ["models/*"],
       "@layouts/*": ["layouts/*"],
-      "@lib/*": ["lib/*"],
+      "@lib/*": ["lib/*"]
     }
   }
 }
