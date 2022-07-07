@@ -12,9 +12,9 @@ import {
 
 import {Menu, Divider} from "@mantine/core";
 
-import styles from "./Userdetails.module.scss";
+import styles from "./UserDetails.module.scss";
 
-const Userdetails = () => {
+const UserDetails = () => {
   const [userContext, setUserContext] = useContext(UserContext);
 
   const Router = useRouter();
@@ -89,4 +89,4 @@ const Userdetails = () => {
   );
 };
 
-export default Userdetails;
+export default UserDetails;

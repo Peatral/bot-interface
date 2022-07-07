@@ -3,7 +3,7 @@ import {MantineProvider, AppShell} from "@mantine/core";
 import {HeaderBar, HeaderItem, HeaderLink} from "@components/Header";
 import {Footer} from "@components/Footer";
 import {UserContext} from "@components/context/UserContext";
-import {UserDetails} from "@components/Userdetails";
+import {UserDetails} from "@components/UserDetails";
 import {Loader} from "@components/Loader";
 
 export default function DefaultLayout({children}) {
