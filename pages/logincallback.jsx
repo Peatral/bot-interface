@@ -2,8 +2,6 @@ import React, {useEffect, useContext, useState} from "react";
 import {UserContext} from "@components/context/UserContext";
 import {useRouter} from "next/router";
 
-
-
 const LoginCallback = () => {
   const Router = useRouter();
   const [userContext, setUserContext] = useContext(UserContext);

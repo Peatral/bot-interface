@@ -4,13 +4,13 @@ import {Generator} from "snowflake-generator";
 
 const SnowflakeGenerator = new Generator(1420070400000);
 
-const newSnowflake = function () {
+export function newSnowflake() {
   return SnowflakeGenerator.generate().toString();
-};
+}
 
-const isSnowflake = function (val) {
+export function isSnowflake(val) {
   return /^\d{17,64}$/.test(val);
-};
+}
 
 export class Snowflake extends mongoose.SchemaType {
   constructor(key, options) {

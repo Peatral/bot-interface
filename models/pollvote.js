@@ -23,6 +23,6 @@ const PollVoteSchema = new Schema({
     required: true,
   },
 });
-const PollVote = mongoose.model("PollVote", PollVoteSchema);
+export const PollVote = mongoose.model("PollVote", PollVoteSchema);
 
 export default {PollVote};

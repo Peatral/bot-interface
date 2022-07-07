@@ -23,7 +23,7 @@ const PollEntrySchema = new Schema({
     default: "",
   },
 });
-const PollEntry = mongoose.model("PollEntry", PollEntrySchema);
+export const PollEntry = mongoose.model("PollEntry", PollEntrySchema);
 
 const PollSchema = new Schema({
   _id: {
@@ -99,6 +99,6 @@ const PollSchema = new Schema({
     default: -1,
   },
 });
-const Poll = mongoose.model("Poll", PollSchema);
+export const Poll = mongoose.model("Poll", PollSchema);
 
 export default {Poll, PollEntry, PollSchema};
