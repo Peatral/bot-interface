@@ -4,7 +4,7 @@ import {faCrown, faImage} from "@fortawesome/free-solid-svg-icons";
 
 import {Tooltip} from "@mantine/core";
 
-import styles from "../styles/Guild.module.scss";
+import styles from "./Guild.module.scss";
 
 const Guild = (props) => {
   const guild = props.guild;

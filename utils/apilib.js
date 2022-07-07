@@ -48,3 +48,5 @@ export function getAuthorPolls(token, authorId) {
     },
   ).then((res) => res.json());
 }
+
+export default {getRoles, getPoll, patchPoll, getAuthorPolls};

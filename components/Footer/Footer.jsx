@@ -1,7 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@mantine/core";
 import {useState, useEffect, useContext} from "react";
-import {ThemeContext} from "./theme_context";
+import {ThemeContext} from "../context/ThemeContext";
 
 export default function Footer() {
   const [theme, setTheme] = useContext(ThemeContext);

@@ -2,7 +2,7 @@ import "../styles/globals.scss";
 import "../styles/peat.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
-import DefaultLayout from "../components/layouts/default";
+import DefaultLayout from "../layouts/default";
 
 import * as Brands from "@fortawesome/free-brands-svg-icons";
 import {library} from "@fortawesome/fontawesome-svg-core";
@@ -17,10 +17,10 @@ library.add(Brands.faTwitch);
 library.add(SolidIcons.faSun);
 library.add(SolidIcons.faMoon);
 
-import CustomHead from "../components/head";
-import {ThemeProvider} from "../components/theme_context";
-import {UserProvider} from "../components/user_context";
-import RouteProtector from "../components/route_protector";
+import CustomHead from "@components/Head/Head";
+import {ThemeProvider} from "@components/context/ThemeContext";
+import {UserProvider} from "@components/context/UserContext";
+import RouteProtector from "@components/RouteProtector/RouteProtector";
 
 export default function MyApp({Component, pageProps}) {
   const defaultPageLayout = function (page) {

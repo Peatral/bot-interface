@@ -1,5 +1,5 @@
 import React, {useEffect, useContext, useState} from "react";
-import {UserContext} from "../components/user_context";
+import {UserContext} from "@components/context/UserContext";
 import {useRouter} from "next/router";
 
 const LoginCallback = () => {

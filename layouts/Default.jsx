@@ -1,12 +1,10 @@
 import {useContext} from "react";
-import HeaderBar from "../header_bar";
-import HeaderItem from "../header_item";
-import Footer from "../footer";
 import {MantineProvider, AppShell} from "@mantine/core";
-import {UserContext} from "../user_context";
-import HeaderLink from "../header_link";
-import Userdetails from "../../components/userdetails";
-import Loader from "../../components/loader";
+import {HeaderBar, HeaderItem, HeaderLink} from "@components/Header/Header";
+import Footer from "@components/Footer/Footer";
+import {UserContext} from "@components/context/UserContext";
+import Userdetails from "@components/Userdetails/Userdetails";
+import Loader from "@components/Loader/Loader";
 
 export default function DefaultLayout({children}) {
   const [userContext] = useContext(UserContext);

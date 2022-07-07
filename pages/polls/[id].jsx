@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext, useMemo} from "react";
 import {useRouter} from "next/router";
-import {UserContext} from "../../components/user_context";
+import {UserContext} from "@components/context/UserContext";
 
 import {
   Paper,
@@ -25,16 +25,16 @@ import {
 import {showNotification, updateNotification} from "@mantine/notifications";
 import {useForm, formList} from "@mantine/form";
 
-import {patchPoll, getPoll, getRoles} from "../../lib/apilib";
+import {patchPoll, getPoll, getRoles} from "@utils/apilib";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faCheck} from "@fortawesome/free-solid-svg-icons";
 
 import {getDiff} from "recursive-diff";
 
-import styles from "../../styles/PollEditor.module.scss";
+import styles from "@styles/pages/PollEditor.module.scss";
 
-import {Durations, getAsTime} from "../../lib/timehelper";
+import {Durations, getAsTime} from "@utils/timehelper";
 
 const PollEditor = () => {
   const MAX_TIME_INTERVALLS = useMemo(() => {

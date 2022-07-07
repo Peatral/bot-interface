@@ -14,10 +14,10 @@ import {
   Badge,
 } from "@mantine/core";
 
-import {UserContext} from "../../components/user_context";
-import {getAuthorPolls} from "../../lib/apilib";
+import {UserContext} from "@components/context/UserContext";
+import {getAuthorPolls} from "@utils/apilib";
 
-import {getAsTime} from "../../lib/timehelper";
+import {getAsTime} from "@utils/timehelper";
 
 const Polls = () => {
   const Router = useRouter();

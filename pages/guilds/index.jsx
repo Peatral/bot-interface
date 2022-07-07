@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
-import {UserContext} from "../../components/user_context";
-import Guild from "../../components/guild";
-import Loader from "../../components/loader";
 import Link from "next/link";
-import styles from "../../styles/Guilds.module.scss";
+import {UserContext} from "@components/context/UserContext";
+import Guild from "@components/Guild/Guild";
+import Loader from "@components/Loader/Loader";
+import styles from "@styles/pages/Guilds.module.scss";
 
 const Guilds = () => {
   const [userContext] = useContext(UserContext);

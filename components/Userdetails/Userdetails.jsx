@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
-import {UserContext} from "./user_context";
 import {useRouter} from "next/router";
 import {useDisclosure} from "@mantine/hooks";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {UserContext} from "@components/context/UserContext";
 import {
   faColumns,
   faPen,

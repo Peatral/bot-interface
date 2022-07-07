@@ -22,3 +22,5 @@ export function getAsTime(millis) {
     };
   }
 }
+
+export default {Durations, getAsTime};
