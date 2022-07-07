@@ -3,7 +3,7 @@ import {MantineProvider, AppShell} from "@mantine/core";
 import {HeaderBar, HeaderItem, HeaderLink} from "@components/Header";
 import {Footer} from "@components/Footer";
 import {UserContext} from "@components/context/UserContext";
-import {Userdetails} from "@components/Userdetails";
+import {UserDetails} from "@components/Userdetails";
 import {Loader} from "@components/Loader";
 
 export default function DefaultLayout({children}) {
@@ -29,7 +29,7 @@ export default function DefaultLayout({children}) {
               </HeaderItem>
             ) : (
               <HeaderItem style={{marginLeft: "auto"}}>
-                <Userdetails />
+                <UserDetails />
               </HeaderItem>
             )}
           </HeaderBar>
