@@ -1,8 +1,8 @@
-import "../styles/globals.scss";
-import "../styles/peat.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
-import DefaultLayout from "../layouts/default";
+import DefaultLayout from "@layouts/Default";
+import "@styles/globals.scss";
+import "@styles/peat.scss";
 
 import * as Brands from "@fortawesome/free-brands-svg-icons";
 import {library} from "@fortawesome/fontawesome-svg-core";
