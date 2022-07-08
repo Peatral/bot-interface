@@ -7,7 +7,7 @@ import {serialize} from "cookie";
 
 import {getToken, getRefreshToken, COOKIE_OPTIONS} from "@utils/authenticate";
 
-import { basePath } from "next.config";
+import {basePath} from "next.config";
 
 export default nc({})
   .use(...auths)

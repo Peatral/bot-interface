@@ -6,22 +6,27 @@ import {UserContext} from "@components/context/UserContext";
 import {ThemeContext} from "@components/context/ThemeContext";
 import {UserDetails} from "@components/UserDetails";
 import {Loader} from "@components/Loader";
+import {useRouter} from "next/router";
+
+const {NEXT_PUBLIC_URL} = process.env.NEXT_PUBLIC_URL;
 
 export default function DefaultLayout({children}) {
   const [userContext] = useContext(UserContext);
+  const Router = useRouter();
+  const api_url = `${Router.basePath}/api`;
   const [theme] = useContext(ThemeContext);
   return (
     <MantineProvider theme={{colorScheme: theme}}>
       <AppShell
         header={
           <HeaderBar>
-            <HeaderLink label="Home" link="/" />
+            <HeaderLink label="Home" link={NEXT_PUBLIC_URL} external />
+            <HeaderLink label="Bot" link="/" />
             {userContext.details === null ? (
               <HeaderLink
                 label="Login"
-                link={`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/auth/discord`}
+                link={`${api_url}/users/auth/discord`}
                 style={{marginLeft: "auto"}}
-                external
               />
             ) : !userContext.details ? (
               <HeaderItem style={{marginLeft: "auto"}}>

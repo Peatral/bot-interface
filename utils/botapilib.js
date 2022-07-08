@@ -1,19 +1,16 @@
 import {basePath} from "next.config";
 
-const api_url = `${basePath}/api`
+const api_url = `${basePath}/api`;
 
 export function getRoles(token, guildId) {
-  return fetch(
-    `${api_url}/guilds/${guildId}/roles`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        Authorization: `Bearer ${token}`,
-      },
+  return fetch(`${api_url}/guilds/${guildId}/roles`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${token}`,
     },
-  ).then((res) => res.json());
+  }).then((res) => res.json());
 }
 
 export function getPoll(token, pollId) {
@@ -40,17 +37,14 @@ export function patchPoll(token, pollId, changes) {
 }
 
 export function getAuthorPolls(token, authorId) {
-  return fetch(
-    `${api_url}/polls/filter?authorId=${authorId}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        Authorization: `Bearer ${token}`,
-      },
+  return fetch(`${api_url}/polls/filter?authorId=${authorId}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      Authorization: `Bearer ${token}`,
     },
-  ).then((res) => res.json());
+  }).then((res) => res.json());
 }
 
 export default {getRoles, getPoll, patchPoll, getAuthorPolls};
