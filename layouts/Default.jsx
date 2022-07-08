@@ -3,13 +3,15 @@ import {MantineProvider, AppShell} from "@mantine/core";
 import {HeaderBar, HeaderItem, HeaderLink} from "@components/Header";
 import {Footer} from "@components/Footer";
 import {UserContext} from "@components/context/UserContext";
+import {ThemeContext} from "@components/context/ThemeContext";
 import {UserDetails} from "@components/UserDetails";
 import {Loader} from "@components/Loader";
 
 export default function DefaultLayout({children}) {
   const [userContext] = useContext(UserContext);
+  const [theme] = useContext(ThemeContext);
   return (
-    <MantineProvider theme={{colorScheme: "dark"}}>
+    <MantineProvider theme={{colorScheme: theme}}>
       <AppShell
         header={
           <HeaderBar>
