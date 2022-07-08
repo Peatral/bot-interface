@@ -18,6 +18,7 @@ export default function DefaultLayout({children}) {
         header={
           <HeaderBar>
             <HeaderLink label="Home" link={NEXT_PUBLIC_URL} external />
+            <HeaderLink label="Presentations" link={`${NEXT_PUBLIC_URL}/presentations`} external />
             <HeaderLink label="Bot" link="/" />
             {userContext.details === null ? (
               <HeaderLink
