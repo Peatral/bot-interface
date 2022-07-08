@@ -18,11 +18,12 @@ const UserDetails = () => {
   const [userContext, setUserContext] = useContext(UserContext);
 
   const Router = useRouter();
+  const api_url = `${Router.basePath}/api`;
 
   const [opened, handlers] = useDisclosure(false);
 
   const logoutHandler = () => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/logout`, {
+    fetch(`${api_url}/users/logout`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

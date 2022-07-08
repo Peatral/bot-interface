@@ -1,6 +1,10 @@
+import {basePath} from "next.config";
+
+const api_url = `${basePath}/api`
+
 export function getRoles(token, guildId) {
   return fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/guilds/${guildId}/roles`,
+    `${api_url}/guilds/${guildId}/roles`,
     {
       method: "GET",
       credentials: "include",
@@ -13,7 +17,7 @@ export function getRoles(token, guildId) {
 }
 
 export function getPoll(token, pollId) {
-  return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/polls/${pollId}`, {
+  return fetch(`${api_url}/polls/${pollId}`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -24,7 +28,7 @@ export function getPoll(token, pollId) {
 }
 
 export function patchPoll(token, pollId, changes) {
-  return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/polls/${pollId}`, {
+  return fetch(`${api_url}/polls/${pollId}`, {
     method: "PATCH",
     body: JSON.stringify(changes),
     credentials: "include",
@@ -37,7 +41,7 @@ export function patchPoll(token, pollId, changes) {
 
 export function getAuthorPolls(token, authorId) {
   return fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/polls/filter?authorId=${authorId}`,
+    `${api_url}/polls/filter?authorId=${authorId}`,
     {
       method: "GET",
       credentials: "include",

@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useCallback} from "react";
-
+import { useRouter } from "next/router";
 import {showNotification} from "@mantine/notifications";
 
 const UserContext = React.createContext([{}, () => {}]);
+
+
 
 let initialState = {
   token: undefined,
@@ -12,6 +14,8 @@ let initialState = {
 
 const UserProvider = (props) => {
   const [state, setState] = useState(initialState);
+  const Router = useRouter();
+  const api_url = `${Router.basePath}/api`;
 
   const fetchDetailsFail = () => {
     showNotification({
@@ -45,7 +49,7 @@ const UserProvider = (props) => {
    * Silent Refresh
    */
   const silentRefresh = useCallback(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/refreshToken`, {
+    fetch(`${api_url}/users/refreshToken`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -99,7 +103,7 @@ const UserProvider = (props) => {
    * Fetch user details if possible
    */
   const fetchUserDetails = useCallback(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me`, {
+    fetch(`${api_url}/users/me`, {
       method: "GET",
       credentials: "include",
       // Pass authentication token as bearer token in header
@@ -142,7 +146,7 @@ const UserProvider = (props) => {
    * Fetch guilds once token is ready
    */
   const fetchGuilds = useCallback(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me/guilds`, {
+    fetch(`${api_url}/users/me/guilds`, {
       method: "GET",
       credentials: "include",
       // Pass authentication token as bearer token in header

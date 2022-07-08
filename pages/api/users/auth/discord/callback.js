@@ -7,11 +7,13 @@ import {serialize} from "cookie";
 
 import {getToken, getRefreshToken, COOKIE_OPTIONS} from "@utils/authenticate";
 
+import { basePath } from "next.config";
+
 export default nc({})
   .use(...auths)
   .get(
     passport.authenticate("discord", {
-      failureRedirect: "/bot",
+      failureRedirect: `${basePath}`,
     }),
   )
   .get(async (req, res, next) => {
@@ -34,10 +36,10 @@ export default nc({})
             "Set-Cookie",
             serialize("refreshToken", refreshToken, COOKIE_OPTIONS),
           );
-          res.redirect(`/bot/logincallback?token=${token}`);
+          res.redirect(`${basePath}/logincallback?token=${token}`);
         }
       })
       .catch((err) => {
-        res.redirect("/bot");
+        res.redirect(`${basePath}`);
       });
   });
