@@ -18,9 +18,12 @@ async function dbConnect() {
       useUnifiedTopology: true,
     };
 
-    cached.promise = mongoose.connect(url, options).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(url, options)
+      .then((mongoose) => {
+        return mongoose;
+      })
+      .catch(console.error);
   }
   cached.conn = await cached.promise;
   return cached.conn;
