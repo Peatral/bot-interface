@@ -6,9 +6,8 @@ import {
   respondWithNotFound,
   respondWithBadRequest,
 } from "@utils/apiutil";
-import {Poll, PollEntry} from "@models/poll";
-import {PollVote} from "@models/pollvote";
-import dbConnect from "@utils/connectdb";
+import {Poll} from "@models/poll";
+import {checkDBConnection} from "@utils/dbutils";
 
 const checkToken = function (req, res, next) {
   if (req.query.token == process.env.API_MASTER_TOKEN) {
@@ -19,9 +18,8 @@ const checkToken = function (req, res, next) {
 };
 
 export default nc({})
+  .use(checkDBConnection)
   .get(async (req, res, next) => {
-    await dbConnect();
-
     const pollId = req.query.pollid;
 
     Poll.findById(pollId)
@@ -35,8 +33,6 @@ export default nc({})
       .catch((err) => respondWithInternalServerError(res, err));
   })
   .patch(async (req, res, next) => {
-    await dbConnect();
-
     const pollId = req.query.pollid;
 
     Poll.findById(pollId)

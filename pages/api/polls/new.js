@@ -7,7 +7,7 @@ import {
   respondWithBadRequest,
 } from "@utils/apiutil";
 import {Poll, PollEntry} from "@models/poll";
-import dbConnect from "@utils/connectdb";
+import {checkDBConnection} from "@utils/dbutils";
 
 const checkToken = function (req, res, next) {
   if (req.query.token == process.env.API_MASTER_TOKEN) {
@@ -19,9 +19,8 @@ const checkToken = function (req, res, next) {
 
 export default nc({})
   .use(checkToken)
+  .use(checkDBConnection)
   .post(async (req, res, next) => {
-    await dbConnect();
-
     const errors = [];
 
     Object.keys(req.body).forEach((key) => {
