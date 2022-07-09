@@ -19,7 +19,11 @@ const checkToken = function (req, res, next) {
 };
 
 export default nc({}).post(async (req, res, next) => {
-  await dbConnect();
+  const {conn} = await dbConnect();
+
+  if (!conn) {
+    return respondWithInternalServerError(res, "Could not connect to database");
+  }
 
   const pollId = req.query.pollid;
   const userId = req.body.userId;
@@ -65,7 +69,14 @@ export default nc({}).post(async (req, res, next) => {
         },
       )
         .then((vote) => res.status(200).send(vote))
-        .catch((err) => respondWithInternalServerError(res, err));
+        .catch((err) =>
+          respondWithInternalServerError(
+            res,
+            `Error while updating Vote: ${err}`,
+          ),
+        );
     })
-    .catch((err) => respondWithInternalServerError(res, err));
+    .catch((err) =>
+      respondWithInternalServerError(res, `Error while querying Poll: ${err}`),
+    );
 });
