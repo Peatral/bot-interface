@@ -9,6 +9,7 @@ import {
 import {Poll, PollEntry} from "@models/poll";
 import {PollVote} from "@models/pollvote";
 import dbConnect from "@utils/connectdb";
+import {useRouter} from "next/router";
 
 const checkToken = function (req, res, next) {
   if (req.query.token == process.env.API_MASTER_TOKEN) {
@@ -22,7 +23,8 @@ export default nc({})
   .get(async (req, res, next) => {
     await dbConnect();
 
-    const pollId = req.query.pollid;
+    const Router = useRouter();
+    const pollId = Router.query.pollid;
 
     Poll.findById(pollId)
       .then((poll) => {
@@ -37,7 +39,8 @@ export default nc({})
   .patch(async (req, res, next) => {
     await dbConnect();
 
-    const pollId = req.query.pollid;
+    const Router = useRouter();
+    const pollId = Router.query.pollid;
 
     Poll.findById(pollId)
       .then((poll) => {

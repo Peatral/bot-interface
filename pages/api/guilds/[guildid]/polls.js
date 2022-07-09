@@ -8,6 +8,7 @@ import {
 } from "@utils/apiutil";
 import Guild from "@models/guild";
 import dbConnect from "@utils/connectdb";
+import {useRouter} from "next/router";
 
 const checkToken = function (req, res, next) {
   if (req.query.token == process.env.API_MASTER_TOKEN) {
@@ -22,7 +23,8 @@ export default nc({})
   .get(async (req, res, next) => {
     await dbConnect();
 
-    const guildId = req.query.guildid;
+    const Router = useRouter();
+    const guildId = Router.query.guildid;
 
     Guild.findById(guildId)
       .then((guild) => {

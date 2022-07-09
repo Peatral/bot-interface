@@ -8,6 +8,7 @@ import {
 } from "@utils/apiutil";
 import Guild from "@models/guild";
 import dbConnect from "@utils/connectdb";
+import {useRouter} from "next/router";
 
 const checkToken = function (req, res, next) {
   if (req.query.token == process.env.API_MASTER_TOKEN) {
@@ -21,8 +22,9 @@ export default nc({})
   .put(async (req, res, next) => {
     await dbConnect();
 
-    const guildId = req.query.guildid;
-    const userId = req.query.userid;
+    const Router = useRouter();
+    const guildId = Router.query.guildid;
+    const userId = Router.query.userid;
 
     Guild.findByIdAndUpdate(guildId, {
       $addToSet: {
@@ -40,8 +42,9 @@ export default nc({})
   .delete(async (req, res, next) => {
     await dbConnect();
 
-    const guildId = req.query.guildid;
-    const userId = req.query.userid;
+    const Router = useRouter();
+    const guildId = Router.query.guildid;
+    const userId = Router.query.userid;
 
     Guild.findByIdAndUpdate(guildId, {
       $pull: {
