@@ -1,4 +1,5 @@
 import dbConnect from "./connectdb";
+import {respondWithInternalServerError} from "./apiutil";
 
 export async function checkDBConnection(req, res, next) {
   const {conn} = await dbConnect();
