@@ -13,7 +13,6 @@ import {
   verifyUser,
 } from "@utils/authenticate";
 import auths from "@lib/middlewares/auth";
-import {useRouter} from "next/router";
 
 const {BOT_API_URL} = process.env;
 
@@ -32,7 +31,6 @@ export default nc({})
   .use(...auths)
   .use(verifyUser)
   .get(async (req, res, next) => {
-    const Router = useRouter();
-    const guildId = Router.query.guildid;
+    const guildId = req.query.guildid;
     botApiCall(req, res, `/guilds/${guildId}/channels`);
   });

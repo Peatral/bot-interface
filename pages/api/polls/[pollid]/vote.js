@@ -9,7 +9,6 @@ import {
 import {Poll, PollEntry} from "@models/poll";
 import {PollVote} from "@models/pollvote";
 import dbConnect from "@utils/connectdb";
-import {useRouter} from "next/router";
 
 const checkToken = function (req, res, next) {
   if (req.query.token == process.env.API_MASTER_TOKEN) {
@@ -22,9 +21,7 @@ const checkToken = function (req, res, next) {
 export default nc({}).post("/:pollid/vote", async (req, res, next) => {
   await dbConnect();
 
-  const Router = useRouter();
-
-  const pollId = Router.query.pollid;
+  const pollId = req.query.pollid;
   const userId = req.body.userId;
   const votes = req.body.votes;
 
