@@ -18,7 +18,7 @@ const checkToken = function (req, res, next) {
   }
 };
 
-export default nc({}).post("/:pollid/vote", async (req, res, next) => {
+export default nc({}).post(async (req, res, next) => {
   await dbConnect();
 
   const pollId = req.query.pollid;
