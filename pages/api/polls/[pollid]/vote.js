@@ -25,12 +25,26 @@ export default nc({})
     const userId = req.body.userId;
     const votes = req.body.votes;
 
+    if (!votes || votes.length <= 0) {
+      return respondWithBadRequest(res, "Votes cannot be empty");
+    }
+
+    if (!userId || userId === "") {
+      return respondWithBadRequest(res, "UserID cannot be empty");
+    }
+
     Poll.findById(pollId)
       .then((poll) => {
         if (!poll) {
           return respondWithNotFound(res, "Poll not found");
         }
 
+        if (!poll.entries || poll.entries.length <= 0) {
+          return respondWithInternalServerError(
+            res,
+            "Poll entries are not allowed to be empty",
+          );
+        }
         const pollEntries = poll.entries.map((entry) => entry._id);
 
         const errors = [];
