@@ -7,7 +7,7 @@ import {
   respondWithBadRequest,
 } from "@utils/apiutil";
 import Guild from "@models/guild";
-import dbConnect from "@utils/connectdb";
+import {checkDBConnection} from "@utils/dbutils";
 
 const checkToken = function (req, res, next) {
   if (req.query.token == process.env.API_MASTER_TOKEN) {
@@ -18,9 +18,8 @@ const checkToken = function (req, res, next) {
 };
 
 export default nc({})
+  .use(checkDBConnection)
   .put(async (req, res, next) => {
-    await dbConnect();
-
     const guildId = req.query.guildid;
     const userId = req.query.userid;
 
@@ -38,8 +37,6 @@ export default nc({})
       .catch((err) => respondWithInternalServerError(res, err));
   })
   .delete(async (req, res, next) => {
-    await dbConnect();
-
     const guildId = req.query.guildid;
     const userId = req.query.userid;
 
