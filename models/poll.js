@@ -99,4 +99,4 @@ const PollSchema = new Schema({
   },
 });
 
-export default mongoose.model.Poll || mongoose.model("Poll", PollSchema);
+export default mongoose.models.Poll || mongoose.model("Poll", PollSchema);

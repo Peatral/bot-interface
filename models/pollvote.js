@@ -24,5 +24,5 @@ const PollVoteSchema = new Schema({
   },
 });
 
-export default mongoose.model.PollVote ||
+export default mongoose.models.PollVote ||
   mongoose.model("PollVote", PollVoteSchema);
