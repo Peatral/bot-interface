@@ -15,6 +15,11 @@ const DiscordUser = new Schema({
     type: Snowflake,
     default: null,
   },
+  usertype: {
+    type: String,
+    enum: ["USER", "BOT"],
+    default: "USER",
+  },
   discordSession: {
     refreshToken: {
       type: String,
