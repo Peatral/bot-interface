@@ -6,19 +6,11 @@ import {
   respondWithNotFound,
   respondWithBadRequest,
 } from "@utils/apiutil";
-import {Poll} from "@models/poll";
-import {checkDBConnection} from "@utils/dbutils";
-
-const checkToken = function (req, res, next) {
-  if (req.query.token == process.env.API_MASTER_TOKEN) {
-    next();
-  } else {
-    respondWithUnauthorized(res);
-  }
-};
+import Poll from "@models/poll";
+import api_auths from "@lib/middlewares/api_auth";
 
 export default nc({})
-  .use(checkDBConnection)
+  .use(...api_auths)
   .get(async (req, res, next) => {
     const pollId = req.query.pollid;
 

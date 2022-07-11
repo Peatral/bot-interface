@@ -33,6 +33,7 @@ export function getRefreshToken(user) {
 export function verifyUser(req, res, next) {
   passport.authenticate("jwt", {session: false}, (err, user, info) => {
     if (err) {
+      console.error(err);
       return respondWithInternalServerError(res, err);
     }
     if (!user) {
@@ -40,6 +41,7 @@ export function verifyUser(req, res, next) {
     }
     req.logIn(user, (err) => {
       if (err) {
+        console.error(err);
         return next(err);
       }
       next();

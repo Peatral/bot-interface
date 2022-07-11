@@ -6,13 +6,7 @@ import {
   respondWithNotFound,
   respondWithBadRequest,
 } from "@utils/apiutil";
-import {
-  getToken,
-  getRefreshToken,
-  COOKIE_OPTIONS,
-  verifyUser,
-} from "@utils/authenticate";
-import auths from "@lib/middlewares/auth";
+import api_auths from "@lib/middlewares/api_auth";
 
 const {BOT_API_URL} = process.env;
 
@@ -28,8 +22,7 @@ const botApiCall = async (req, res, path) => {
 };
 
 export default nc({})
-  .use(...auths)
-  .use(verifyUser)
+  .use(...api_auths)
   .get(async (req, res, next) => {
     const guildId = req.query.guildid;
     botApiCall(req, res, `/guilds/${guildId}/channels`);
