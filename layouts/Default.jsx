@@ -19,13 +19,7 @@ export default function DefaultLayout({children}) {
       <AppShell
         header={
           <HeaderBar>
-            <HeaderLink label="Home" link={NEXT_PUBLIC_URL} external />
-            <HeaderLink
-              label="Presentations"
-              link={`${NEXT_PUBLIC_URL}/presentations`}
-              external
-            />
-            <HeaderLink label="Bot" link="/" />
+            <HeaderLink label="Home" link="/" />
             {userContext.details === null ? (
               <HeaderLink
                 label="Login"
