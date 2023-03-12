@@ -55,7 +55,7 @@ const Polls = () => {
           </>
         ) : (
           <>
-            {polls.map((poll, index) => (
+            {polls.reverse().map((poll, index) => (
               <Card p="md" key={index}>
                 <Group position="apart">
                   <Title order={2}>{poll.title}</Title>
